@@ -25,9 +25,18 @@ const anchors = ref<any>([]);
 const titles = ref<any>([]);
 const hTags = ref<any>([]);
 
+const CNEncode = (str: string) => {
+  str.match(/[\u4E00-\u9FA5]/g)?.forEach((t) => {
+    str = str.replace(t, encodeURIComponent(t));
+  });
+  str = str.replace(/%/g, "$");
+  return str;
+};
+
 const getArticle = async () => {
+  const url = "writings/注会/2. 存货/2.1 存货的确认和初始计量.md";
   const res = await axios.get(
-    "writings/注会/3. 固定资产/3.1 固定资产的确认和初始计量.md"
+    (process.env.NODE_ENV == "development" ? url : CNEncode(url))
   );
   text.value = res.data;
 };

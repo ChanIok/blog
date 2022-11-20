@@ -10,6 +10,7 @@
         >
           <n-tab-pane name="Hi">
             欢迎来到本站，这里是 ChanIok 在区块链上构建的一心净土
+            <!-- <n-button @click="handleClick"> 点它 </n-button> -->
           </n-tab-pane>
           <n-tab-pane class="n-tab-pane-about-me" name="关于我">
             <n-card title="ChanIok" class="n-card-second">
@@ -27,8 +28,10 @@
 <script setup lang="ts">
 import { ref } from "vue";
 import { NCard, NTabs, NTabPane } from "naive-ui";
-
-const count = ref(0);
+import { NButton } from "naive-ui";
+const handleClick = () => {
+  console.log("111");
+};
 </script>
 
 <style lang="less" scoped>
