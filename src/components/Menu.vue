@@ -7,8 +7,8 @@ import { h, ref, Component } from "vue";
 import { NIcon, NMenu } from "naive-ui";
 import type { MenuOption } from "naive-ui";
 import {
-  LaptopOutline as WorkIcon,
   LogOutOutline as HomeIcon,
+  BookOutline as BookIcon
 } from "@vicons/ionicons5";
 import { RouterLink } from "vue-router";
 
@@ -43,7 +43,7 @@ const menuOptions: MenuOption[] = [
         { default: () => "文章" }
       ),
     key: "writings",
-    icon: renderIcon(WorkIcon),
+    icon: renderIcon(BookIcon),
   },
 ];
 

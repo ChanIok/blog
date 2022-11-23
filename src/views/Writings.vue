@@ -58,14 +58,6 @@ const CNDecode = (str: string) => {
   return str;
 };
 
-const getArticle = async () => {
-  const url = "writings/注会/2. 存货/2.1 存货的确认和初始计量.md";
-  const res = await axios.get(
-    process.env.NODE_ENV == "development" ? url : CNEncode(url)
-  );
-  text.value = res.data;
-};
-
 const setAnchors = () => {
   anchors.value = preview.value.$el.querySelectorAll("h1,h2,h3,h4,h5,h6");
   titles.value = Array.from(anchors.value).filter(
@@ -151,9 +143,6 @@ const getWritingList = async () => {
   writingList.value.sort();
 };
 onMounted(async () => {
-  await getArticle();
-  await nextTick();
-  setAnchors();
   await getWritingList();
 });
 </script>
@@ -176,11 +165,12 @@ onMounted(async () => {
   }
   .container {
     display: flex;
+    width: 100%;
     .content {
-      overflow: auto;
       box-sizing: border-box;
       padding: 40px;
       background-color: rgba(255, 255, 255, 0.9);
+      flex:1;
     }
     .outline {
       position: sticky;
@@ -189,9 +179,8 @@ onMounted(async () => {
       box-sizing: border-box;
       padding: 0px;
       padding-top: 60px;
-
       background-color: rgba(255, 255, 255, 0.9);
-      min-width: 250px;
+      width: 250px;
       .outline-item {
         cursor: pointer;
         &:hover {

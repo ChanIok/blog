@@ -48,6 +48,7 @@ import Menu from "@/components/Menu.vue";
   }
   .content {
     box-sizing: border-box;
+    width: 100%;
   }
 }
 </style>
