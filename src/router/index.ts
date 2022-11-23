@@ -10,7 +10,7 @@ const routes = [
     redirect: "/",
     children: [
       { path: "", component: WelcomePage },
-      { path: "articles", component: Writings },
+      { path: "writings", component: Writings },
     ],
   },
 ];

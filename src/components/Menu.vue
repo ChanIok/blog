@@ -26,7 +26,7 @@ const menuOptions: MenuOption[] = [
             path: "/",
           },
         },
-        { default: () => "回家" }
+        { default: () => "主页" }
       ),
     key: "go-back-home",
     icon: renderIcon(HomeIcon),
@@ -37,12 +37,12 @@ const menuOptions: MenuOption[] = [
         RouterLink,
         {
           to: {
-            path: "/articles",
+            path: "/writings",
           },
         },
         { default: () => "文章" }
       ),
-    key: "articles",
+    key: "writings",
     icon: renderIcon(WorkIcon),
   },
 ];
