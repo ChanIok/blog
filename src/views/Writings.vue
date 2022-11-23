@@ -24,8 +24,9 @@
 <script setup lang="ts">
 import { onMounted, ref, nextTick } from "vue";
 import SidebarVue from "@/components/Sidebar.vue";
-import { getLatestState } from "@/utils/artools";
+import { getLatestState, CNDecode } from "@/utils/artools";
 import axios from "axios";
+import { contractAddress } from "@/config";
 
 const text = ref("");
 const preview = ref<any>(null);
@@ -42,20 +43,6 @@ const onClickCallback = async (e: any) => {
   text.value = res.data;
   await nextTick();
   setAnchors();
-};
-
-const CNEncode = (str: string) => {
-  str.match(/[\u4E00-\u9FA5]/g)?.forEach((t) => {
-    str = str.replace(t, encodeURIComponent(t));
-  });
-  str = str.replace(/%/g, "$");
-  return str;
-};
-
-const CNDecode = (str: string) => {
-  str = str.replace(/\$/g, "%");
-  str = decodeURIComponent(str);
-  return str;
 };
 
 const setAnchors = () => {
@@ -96,7 +83,7 @@ const handleAnchorClick = (anchor: any) => {
 
 const getWritingList = async () => {
   const manifest = await getLatestState(
-    "knSZvmLbV9_wcFWULLXhBF3J7LJpYluuPUEW2VJbTYs"
+    contractAddress
   );
   const paths = manifest.paths;
   const catalogue: any[] = [];
@@ -146,6 +133,7 @@ onMounted(async () => {
   await getWritingList();
 });
 </script>
+
 <style lang="less" scoped>
 #writings {
   width: 100%;
@@ -170,7 +158,7 @@ onMounted(async () => {
       box-sizing: border-box;
       padding: 40px;
       background-color: rgba(255, 255, 255, 0.9);
-      flex:1;
+      flex: 1;
     }
     .outline {
       position: sticky;

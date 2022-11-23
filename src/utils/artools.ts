@@ -19,3 +19,9 @@ export const getLatestState = async (txId: string) => {
     .data;
   return data;
 };
+
+export const CNDecode = (str: string) => {
+  str = str.replace(/\$/g, "%");
+  str = decodeURIComponent(str);
+  return str;
+};
