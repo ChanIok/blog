@@ -156,21 +156,7 @@ const getLatestManifest = async (id: string) => {
 const a = async () => {
   differentialUpload(
     "./dist",
-    await getLatestManifest("9_3pl0jk-WKaUpAVcqT0xKeYOO40Ew8qpoRfgN7Qpm4")
+    await getLatestManifest("RNSaKOuSCt5Pf8euirpV-8JXHgkbn5NEez2mNCiZVHo")
   );
 };
 a();
-
-
-// uploadDir("./dist");
-
-// bundlr
-//   .upload(fs.readFileSync("dist/manifest.json"), {
-//     tags: [
-//       { name: "Content-type", value: "application/x.arweave-manifest+json" },
-//     ],
-//   })
-//   .then((res: any) => {
-//     console.log(res);
-//   });
-

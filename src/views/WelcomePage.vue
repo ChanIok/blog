@@ -1,5 +1,6 @@
 <template>
   <div id="welcome-page">
+    <UniverseVue />
     <div class="container">
       <div class="card">
         <div class="header">
@@ -15,6 +16,7 @@
 </template>
 
 <script setup lang="ts">
+import UniverseVue from "@/components/Universe.vue";
 import { ref } from "vue";
 import { NCard, NTabs, NTabPane } from "naive-ui";
 </script>

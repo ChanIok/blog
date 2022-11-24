@@ -14,7 +14,7 @@ export const getLatestState = async (txId: string) => {
     arweaveInstance,
     contractIntialStateTx
   );
-  const id = latestState.manifest.pop();
+  const id = latestState.manifests.pop();
   const data = (await axios.get(`https://arweave.net/${id}/manifest.json`))
     .data;
   return data;
