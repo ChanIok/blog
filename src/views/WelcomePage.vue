@@ -17,8 +17,6 @@
 
 <script setup lang="ts">
 import UniverseVue from "@/components/Universe.vue";
-import { ref } from "vue";
-import { NCard, NTabs, NTabPane } from "naive-ui";
 </script>
 
 <style lang="less" scoped>

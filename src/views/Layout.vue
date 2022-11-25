@@ -4,19 +4,26 @@
     :style="{ backgroundImage: 'url(' + backgroundImg + ')' }"
   ></div>
   <div class="background-mask"></div>
+  <LoadingMaskVue />
   <div class="container">
-    <div class="menu-wrapper">
-      <Menu></Menu>
+    <div class="header">
+      <n-loading-bar-provider>
+        <LoadingBarVue />
+      </n-loading-bar-provider>
+      <NavBarVue />
     </div>
     <div class="content">
-      <router-view></router-view>
+      <router-view />
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
 import backgroundImg from "@/assets/Liyue_1.jpg";
-import Menu from "@/components/Menu.vue";
+import NavBarVue from "@/components/NavBar.vue";
+import LoadingBarVue from "@/components/LoadingBar.vue";
+import LoadingMaskVue from "@/components/LoadingMask.vue";
+import { NLoadingBarProvider } from "naive-ui";
 </script>
 
 <style lang="less" scoped>
@@ -40,10 +47,10 @@ import Menu from "@/components/Menu.vue";
   height: 100%;
   display: flex;
   flex-direction: column;
-  .menu-wrapper {
+  .header {
     width: 100%;
     position: fixed;
-    z-index: 998;
+    z-index: 99;
     background-color: rgba(255, 255, 255, 1);
   }
   .content {

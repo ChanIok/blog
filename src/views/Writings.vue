@@ -13,6 +13,7 @@
           :style="{ padding: `10px 0 10px ${20 + anchor.indent * 20}px` }"
           @click="handleAnchorClick(anchor)"
           class="outline-item"
+          :class="{ isClicked: currentIndex === anchor.lineIndex }"
         >
           <a style="cursor: pointer">{{ anchor.title }}</a>
         </div>
@@ -27,6 +28,7 @@ import SidebarVue from "@/components/Sidebar.vue";
 import { getLatestState, CNDecode } from "@/utils/artools";
 import axios from "axios";
 import { contractAddress } from "@/config";
+import { loadingBarAction } from "@/store";
 
 const text = ref("");
 const preview = ref<any>(null);
@@ -35,14 +37,17 @@ const titles = ref<any>([]);
 const hTags = ref<any>([]);
 const writingList = ref<any>([]);
 const reloadOutline = ref<boolean>(true);
+const currentIndex = ref<any>();
 
 const onClickCallback = async (e: any) => {
+  loadingBarAction.value = "start";
   const res = await axios.get(
     process.env.NODE_ENV == "development" ? CNDecode(e) : e
   );
   text.value = res.data;
   await nextTick();
   setAnchors();
+  loadingBarAction.value = "finish";
 };
 
 const setAnchors = () => {
@@ -69,6 +74,7 @@ const setAnchors = () => {
 
 const handleAnchorClick = (anchor: any) => {
   const { lineIndex } = anchor;
+  currentIndex.value = lineIndex;
   const heading = preview.value.$el.querySelector(
     `[data-v-md-line="${lineIndex}"]`
   );
@@ -82,9 +88,7 @@ const handleAnchorClick = (anchor: any) => {
 };
 
 const getWritingList = async () => {
-  const manifest = await getLatestState(
-    contractAddress
-  );
+  const manifest = await getLatestState(contractAddress);
   const paths = manifest.paths;
   const catalogue: any[] = [];
   for (const key in paths) {
@@ -130,7 +134,9 @@ const getWritingList = async () => {
   writingList.value.sort();
 };
 onMounted(async () => {
+  loadingBarAction.value = "start";
   await getWritingList();
+  loadingBarAction.value = "finish";
 });
 </script>
 
@@ -166,15 +172,24 @@ onMounted(async () => {
       height: 100vh;
       box-sizing: border-box;
       padding: 0px;
-      padding-top: 60px;
+      padding-top: 72px;
       background-color: rgba(255, 255, 255, 0.9);
       width: 250px;
       .outline-item {
         cursor: pointer;
+        font-size: 13px;
+        color: rgba(60, 60, 60, 0.7);
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        overflow: hidden;
+        line-height: 14px;
         &:hover {
           transition: 0.2s;
-          background-color: rgba(192, 192, 192, 0.2);
+          color: rgb(33, 53, 71);
         }
+      }
+      .isClicked {
+        color: rgb(33, 53, 71);
       }
     }
   }
