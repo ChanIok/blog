@@ -8,7 +8,8 @@
           <div class="header-right">.eth</div>
         </div>
         <div class="content">
-          Hi，欢迎来到本站，这里是 我 构筑于区块链的一心净土
+          <span> Hi，欢迎来到本站， </span>
+          <span> 这里是我构筑于区块链的一心净土 </span>
         </div>
       </div>
     </div>
@@ -21,8 +22,8 @@ import UniverseVue from "@/components/Universe.vue";
 
 <style lang="less" scoped>
 #welcome-page {
-  width: 100vw;
-  height: 100vh;
+  width: 100%;
+  height: 100%;
   .container {
     display: flex;
     width: 100%;
@@ -51,6 +52,14 @@ import UniverseVue from "@/components/Universe.vue";
       .content {
         font-size: 18px;
         color: rgb(255, 255, 255);
+        @media only screen and (max-width: 480px) {
+          margin-top: 20px;
+          line-height: 32px;
+          span {
+            text-align: center;
+            display: block;
+          }
+        }
       }
     }
   }

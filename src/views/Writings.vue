@@ -1,12 +1,22 @@
 <template>
   <div id="writings">
     <div class="sidebar-wrapper">
-      <SidebarVue :menuOptions="writingList" @onClick="onClickCallback" />
+      <n-scrollbar>
+        <SidebarVue :menuOptions="writingList" @onClick="onClickCallback" />
+      </n-scrollbar>
+    </div>
+    <div class="local-nav-wrapper">
+      <n-scrollbar>
+        <LocalNavVue :menuOptions="writingList" @onClick="onClickCallback" />
+      </n-scrollbar>
     </div>
     <div class="container">
-      <div class="content">
-        <v-md-preview :text="text" ref="preview"></v-md-preview>
-      </div>
+      <n-scrollbar>
+        <div class="content">
+          <v-md-preview :text="text" ref="preview"> </v-md-preview>
+        </div>
+        <n-back-top :right="50" />
+      </n-scrollbar>
       <div class="outline" v-if="reloadOutline">
         <div
           v-for="anchor in titles"
@@ -24,7 +34,9 @@
 
 <script setup lang="ts">
 import { onMounted, ref, nextTick } from "vue";
+import { NBackTop, NScrollbar } from "naive-ui";
 import SidebarVue from "@/components/Sidebar.vue";
+import LocalNavVue from "@/components/LocalNav.vue";
 import { getLatestState, CNDecode } from "@/utils/artools";
 import axios from "axios";
 import { contractAddress } from "@/config";
@@ -141,39 +153,68 @@ onMounted(async () => {
 </script>
 
 <style lang="less" scoped>
+@import "@/style/varibles.less";
+
 #writings {
   width: 100%;
-  height: 100%;
   display: flex;
+  background-color: rgba(255, 255, 255, 0.9);
+  height: 100%;
+  position: absolute;
+  top: 0;
+  @media only screen and (max-width: 960px) {
+    flex-direction: column;
+  }
   .sidebar-wrapper {
     position: sticky;
     min-width: 250px;
-    top: 0;
-    height: 100vh;
+    height: calc(100vh - @header-height);
     box-sizing: border-box;
     padding: 0px;
-    padding-top: 60px;
-    background-color: rgba(255, 255, 255, 0.9);
-
+    background-color: rgba(255, 255, 255, 0);
     border-right: 1px solid rgba(128, 128, 128, 0.2);
+    @media only screen and (max-width: 960px) {
+      display: none;
+    }
+  }
+  .local-nav-wrapper {
+    display: none;
+    z-index: 99;
+    background-color: rgba(255, 255, 255, 1);
+    width: 100%;
+    border-bottom: 1px solid rgba(128, 128, 128, 0.2);
+    border-top: 1px solid rgba(128, 128, 128, 0.2);
+    box-sizing: border-box;
+    @media only screen and (max-width: 960px) {
+      display: block;
+      position: fixed;
+    }
   }
   .container {
     display: flex;
     width: 100%;
+    background-color: rgba(255, 255, 255, 0);
+    height: calc(100vh - @header-height);
+    @media only screen and (max-width: 960px) {
+      position: absolute;
+      top: @header-height;
+      height: calc(100vh - (2 * @header-height));
+    }
     .content {
       box-sizing: border-box;
-      padding: 40px;
-      background-color: rgba(255, 255, 255, 0.9);
-      flex: 1;
+      padding: 20px 40px 0 40px;
+      overflow: auto;
+      @media only screen and (max-width: 960px) {
+        padding: 10px 10px 0 10px;
+      }
     }
     .outline {
       position: sticky;
       top: 0;
-      height: 100vh;
+      height: calc(100vh - @header-height);
       box-sizing: border-box;
       padding: 0px;
-      padding-top: 72px;
-      background-color: rgba(255, 255, 255, 0.9);
+      padding-top: 30px;
       width: 250px;
       .outline-item {
         cursor: pointer;
@@ -190,6 +231,9 @@ onMounted(async () => {
       }
       .isClicked {
         color: rgb(33, 53, 71);
+      }
+      @media only screen and (max-width: 1260px) {
+        display: none;
       }
     }
   }
