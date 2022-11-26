@@ -74,11 +74,8 @@ onMounted(() => {
       width: 100%;
       z-index: 99;
       background-color: rgba(255, 255, 255, 1);
-      box-shadow: 0px 0px 10px 10px rgba(0, 0, 0, 0.02);
       box-sizing: border-box;
-      @media only screen and (max-width: 960px) {
-        box-shadow: none;
-      }
+      border-bottom: 1px solid rgba(128, 128, 128, 0.2);
     }
     .content {
       position: absolute;

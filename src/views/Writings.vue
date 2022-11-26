@@ -158,7 +158,7 @@ onMounted(async () => {
 #writings {
   width: 100%;
   display: flex;
-  background-color: rgba(255, 255, 255, 0.9);
+  background-color: rgba(255, 255, 255, 1);
   height: 100%;
   position: absolute;
   top: 0;
