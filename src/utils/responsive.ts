@@ -7,4 +7,7 @@ export const init = () => {
       document.documentElement.clientWidth ||
       document.body.clientWidth;
   };
+
 };
+
+

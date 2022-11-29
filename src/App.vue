@@ -1,5 +1,8 @@
 <template>
-  <n-config-provider id="n-config-provider" >
+  <n-config-provider
+    id="n-config-provider"
+    :theme="theme == 'dark' ? darkTheme : lightTheme"
+  >
     <n-global-style />
     <router-view></router-view>
   </n-config-provider>
@@ -8,7 +11,8 @@
 <script setup lang="ts">
 import { onMounted } from "vue";
 import { init } from "./utils/responsive";
-import { darkTheme, NConfigProvider,NGlobalStyle } from "naive-ui";
+import { darkTheme, lightTheme, NConfigProvider, NGlobalStyle } from "naive-ui";
+import { theme } from "@/store";
 onMounted(() => {
   init();
 });

@@ -2,14 +2,14 @@
   <div id="layout">
     <LoadingMaskVue />
     <BackgroundVue />
-    <div class="container">
-      <div class="header">
+    <div class="layout-container">
+      <div class="layout-header">
         <n-loading-bar-provider>
           <LoadingBarVue />
         </n-loading-bar-provider>
         <NavBarVue />
       </div>
-      <div class="content">
+      <div class="layout-content">
         <router-view />
       </div>
     </div>
@@ -25,33 +25,25 @@ import { NLoadingBarProvider } from "naive-ui";
 </script>
 
 <style lang="less" scoped>
-@import "@/style/varibles.less";
-
 #layout {
   width: 100%;
   height: 100%;
   position: relative;
   overflow: auto;
-  .container {
+  .layout-container {
     width: 100%;
     height: 100%;
     flex-direction: column;
-    position: relative;
-    .header {
-      position: fixed;
-      width: 100%;
+    display: flex;
+    .layout-header {
       z-index: 99;
-      background-color: rgba(255, 255, 255, 1);
       box-sizing: border-box;
       border-bottom: 1px solid rgba(128, 128, 128, 0.2);
     }
-    .content {
-      position: absolute;
-      top: @header-height;
-      height: calc(100% - @header-height);
+    .layout-content {
       box-sizing: border-box;
-      width: 100%;
       overflow: auto;
+      flex: 1;
     }
   }
 }

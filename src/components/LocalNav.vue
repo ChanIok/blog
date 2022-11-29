@@ -14,7 +14,7 @@
       placement="left"
       resizable
     >
-      <n-drawer-content title="文章" :body-content-style="'padding:5px'">
+      <n-drawer-content title="目录" :body-content-style="'padding:5px'">
         <n-menu
           :indent="12"
           :options="props.menuOptions"

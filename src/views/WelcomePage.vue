@@ -1,8 +1,14 @@
 <template>
   <div id="welcome-page">
     <UniverseVue />
-    <div class="container">
-      <div class="card">
+    <div class="welcome-page-container">
+      <div
+        class="card"
+        :class="{
+          'default-dark-theme': theme == 'dark',
+          'light-theme': theme != 'dark',
+        }"
+      >
         <div class="header">
           <div class="header-left">ChanIok</div>
           <div class="header-right">.eth</div>
@@ -18,20 +24,25 @@
 
 <script setup lang="ts">
 import UniverseVue from "@/components/Universe.vue";
+import { theme } from "@/store";
 </script>
 
 <style lang="less" scoped>
+@import "@/style/varibles.less";
 #welcome-page {
   width: 100%;
   height: 100%;
-  .container {
+  .welcome-page-container {
     display: flex;
     width: 100%;
     height: 100%;
     justify-content: center;
     align-items: center;
+    .light-theme {
+      text-shadow: 2px 3px 5px rgba(128, 128, 128, 0.3);
+    }
     .card {
-      font-family: "Microsoft YaHei";
+      font-family: @font-family;
       display: flex;
       flex-direction: column;
       max-width: 500px;
@@ -39,9 +50,9 @@ import UniverseVue from "@/components/Universe.vue";
         display: flex;
         justify-content: center;
         align-items: center;
-        font-size: 42px;
+        font-size: 36px;
         color: rgb(255, 255, 255);
-        line-height: 72px;
+        line-height: 48px;
         .header-right {
           margin-left: 10px;
           margin-top: 20px;
@@ -52,6 +63,7 @@ import UniverseVue from "@/components/Universe.vue";
       .content {
         font-size: 18px;
         color: rgb(255, 255, 255);
+        margin-bottom: 20px;
         @media only screen and (max-width: 480px) {
           margin-top: 20px;
           line-height: 32px;
