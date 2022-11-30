@@ -131,6 +131,7 @@ const activeKey = ref<string | null>(null);
 #nav-bar {
   display: flex;
   justify-content: space-between;
+  height: 100%;
   .options-wrapper {
     display: flex;
     align-items: center;

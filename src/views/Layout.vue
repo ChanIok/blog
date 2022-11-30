@@ -34,10 +34,12 @@ import { NLoadingBarProvider } from "naive-ui";
 <style lang="less" scoped>
 .default-dark-theme {
   --theme-border-color: rgba(64, 64, 64);
+  --theme-background-color: rgb(24, 24, 28);
 }
 
 .light-theme {
   --theme-border-color: rgba(192, 192, 192);
+  --theme-background-color: rgb(255, 255, 255);
 }
 
 #layout {
@@ -54,6 +56,7 @@ import { NLoadingBarProvider } from "naive-ui";
     .layout-header {
       z-index: 99;
       box-sizing: border-box;
+      background-color: var(--theme-background-color);
       border-bottom: 1px solid var(--theme-border-color);
     }
     .layout-content {
