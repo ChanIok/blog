@@ -8,7 +8,8 @@
       <n-anchor
         affix
         :trigger-top="80"
-        :bound="70"
+        :bound="80"
+        ignore-gap
         offset-target="#markdown"
         @click="onClickAnchor"
       >
