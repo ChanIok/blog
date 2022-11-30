@@ -18,7 +18,8 @@
     </div>
     <div class="writings-container">
       <div class="content">
-        <MarkdownVue />
+        <MarkdownVue v-if="!showIntroduction" />
+        <WritingIntroductionVue v-if="showIntroduction" />
       </div>
     </div>
   </div>
@@ -26,7 +27,7 @@
 
 <script setup lang="ts">
 import { onMounted, ref, nextTick } from "vue";
-import {  NScrollbar } from "naive-ui";
+import { NScrollbar } from "naive-ui";
 import SidebarVue from "@/components/Sidebar.vue";
 import LocalNavVue from "@/components/LocalNav.vue";
 import { getLatestState, CNDecode } from "@/utils/artools";
@@ -34,7 +35,9 @@ import axios from "axios";
 import { contractAddress } from "@/config";
 import { loadingBarAction, theme, currentWritingText } from "@/store";
 import MarkdownVue from "@/components/Markdown.vue";
+import WritingIntroductionVue from "@/components/WritingIntroduction.vue";
 
+const showIntroduction = ref<boolean>(true);
 const writingList = ref<any>([]);
 
 const onClickCallback = async (e: any) => {
@@ -44,6 +47,7 @@ const onClickCallback = async (e: any) => {
   );
   currentWritingText.value = res.data;
   await nextTick();
+  showIntroduction.value = false;
   loadingBarAction.value = "finish";
 };
 
@@ -90,7 +94,6 @@ onMounted(async () => {
   } catch (error) {
     console.log(error);
   }
-
   loadingBarAction.value = "finish";
 });
 </script>
