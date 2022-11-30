@@ -12,17 +12,19 @@
         offset-target="#markdown"
         @click="onClickAnchor"
       >
-        <n-anchor-link
-          v-for="item in anchors"
-          :title="item.node.innerText"
-          :href="`#${item.node.id}`"
-        >
+        <n-ellipsis style="max-width: 240px">
           <n-anchor-link
-            v-for="itemChild in item.children"
-            :title="itemChild.node.innerText"
-            :href="`#${itemChild.node.id}`"
-          />
-        </n-anchor-link>
+            v-for="item in anchors"
+            :title="item.node.innerText"
+            :href="`#${item.node.id}`"
+          >
+            <n-anchor-link
+              v-for="itemChild in item.children"
+              :title="itemChild.node.innerText"
+              :href="`#${itemChild.node.id}`"
+            />
+          </n-anchor-link>
+        </n-ellipsis>
       </n-anchor>
     </div>
   </div>
@@ -32,7 +34,13 @@
 import { ref, nextTick, watch } from "vue";
 import { getMarkedContent } from "@/utils/marked";
 import { computed } from "@vue/reactivity";
-import { NScrollbar, NBackTop, NAnchor, NAnchorLink } from "naive-ui";
+import {
+  NScrollbar,
+  NBackTop,
+  NAnchor,
+  NAnchorLink,
+  NEllipsis,
+} from "naive-ui";
 import { currentWritingText } from "@/store";
 const onClickAnchor = (e: PointerEvent) => {
   e.preventDefault();

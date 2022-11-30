@@ -18,7 +18,7 @@
     </div>
     <div class="writings-container">
       <div class="content">
-        <MarkdownVue v-if="!showIntroduction" />
+        <MarkdownVue v-show="!showIntroduction" />
         <WritingIntroductionVue v-if="showIntroduction" />
       </div>
     </div>
@@ -26,7 +26,7 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted, ref, nextTick } from "vue";
+import { onMounted, ref, nextTick, h } from "vue";
 import { NScrollbar } from "naive-ui";
 import SidebarVue from "@/components/Sidebar.vue";
 import LocalNavVue from "@/components/LocalNav.vue";
@@ -36,10 +36,9 @@ import { contractAddress } from "@/config";
 import { loadingBarAction, theme, currentWritingText } from "@/store";
 import MarkdownVue from "@/components/Markdown.vue";
 import WritingIntroductionVue from "@/components/WritingIntroduction.vue";
-
+import { NEllipsis } from "naive-ui";
 const showIntroduction = ref<boolean>(true);
 const writingList = ref<any>([]);
-
 const onClickCallback = async (e: any) => {
   loadingBarAction.value = "start";
   const res = await axios.get(
@@ -64,7 +63,10 @@ const getWritingList = async () => {
     keys.reduce((pre, cur, i) => {
       if (i === keys.length - 1) {
         pre.push({
-          label: CNDecode(keys[keys.length - 1]),
+          label: () =>
+            h(NEllipsis, null, {
+              default: () => CNDecode(keys[keys.length - 1]),
+            }),
           key,
         });
         return pre;
@@ -75,7 +77,7 @@ const getWritingList = async () => {
         }
       }
       pre.push({
-        label: CNDecode(cur),
+        label: () => h(NEllipsis, null, { default: () => CNDecode(cur) }),
         key: cur,
         children: [],
       });
@@ -120,7 +122,7 @@ onMounted(async () => {
     flex-direction: column;
   }
   .sidebar-wrapper {
-    min-width: 250px;
+    width: 250px;
     height: 100%;
     box-sizing: border-box;
     padding: 0px;

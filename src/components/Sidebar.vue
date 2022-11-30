@@ -1,16 +1,18 @@
 <template>
-  <div class="sidebar">
-    <n-menu
-      :indent="12"
-      :options="props.menuOptions"
-      @update:value="handleUpdateValue"
-      accordion
-    />
+  <div id="sidebar">
+
+      <n-menu
+        :root-indent="20"
+        :indent="12"
+        :options="props.menuOptions"
+        @update:value="handleUpdateValue"
+        accordion
+      />
   </div>
 </template>
 
 <script setup lang="ts">
-import { NMenu } from "naive-ui";
+import { NMenu, NEllipsis } from "naive-ui";
 const emit = defineEmits(["onClick"]);
 const props = defineProps(["menuOptions"]);
 const handleUpdateValue = (e: any) => {
@@ -18,4 +20,8 @@ const handleUpdateValue = (e: any) => {
 };
 </script>
 
-<style lang="less" scoped></style>
+<style lang="less" scoped>
+#sidebar {
+  width: 100%;
+}
+</style>
