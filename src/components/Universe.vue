@@ -4,7 +4,7 @@
 <script setup lang="ts">
 // @ts-nocheck
 import { onMounted, ref } from "vue";
-
+import { theme } from "@/store";
 const universe = ref<any>(null);
 
 const load = () => {
@@ -63,7 +63,7 @@ const load = () => {
         if ((h.beginPath(), this.giant))
           (h.fillStyle = "rgba(" + a + "," + this.opacity + ")"),
             h.arc(this.x, this.y, 2, 0, 2 * Math.PI, !1);
-        else if (this.comet) {
+        else if (this.comet && theme.value == "dark") {
           (h.fillStyle = "rgba(" + d + "," + this.opacity + ")"),
             h.arc(this.x, this.y, 1.5, 0, 2 * Math.PI, !1);
           for (var t = 0; t < 30; t++)

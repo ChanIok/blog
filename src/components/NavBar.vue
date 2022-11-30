@@ -32,7 +32,7 @@
 </template>
 
 <script setup lang="ts">
-import { h, ref, Component, CSSProperties, watch } from "vue";
+import { h, ref, Component, CSSProperties, watch, computed } from "vue";
 import { NIcon, NMenu, NSwitch } from "naive-ui";
 import type { MenuOption } from "naive-ui";
 import {
@@ -49,18 +49,15 @@ function renderIcon(icon: Component) {
   return () => h(NIcon, null, { default: () => h(icon) });
 }
 
-const lightActive = ref<boolean>(false);
+const lightActive = computed({
+  get() {
+    return theme.value == "dark" ? false : true;
+  },
 
-watch(
-  () => lightActive.value,
-  (value) => {
-    if (value) {
-      theme.value = "light";
-    } else {
-      theme.value = "dark";
-    }
-  }
-);
+  set(newValue) {
+    theme.value = newValue ? "light" : "dark";
+  },
+});
 
 const railStyle = ({
   focused,

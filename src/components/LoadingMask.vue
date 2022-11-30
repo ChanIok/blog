@@ -1,14 +1,24 @@
 <template>
-  <div id="loading-mask" v-if="isShow" ref="loadingMask">
-    <div class="loading-bar">
-      <img :src="loadingbarImg" alt="Loading..." />
+  <div
+    id="loading-mask"
+    v-if="isShow"
+    ref="loadingMask"
+    :class="{
+      'loading-mask-dark-theme': theme == 'dark',
+      'loading-mask-light-theme': theme != 'dark',
+    }"
+  >
+    <div class="container">
+      <div
+        class="loading-bar"
+      ></div>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
 import { loadingbarImg } from "@/assets/loadingbarImg";
-import { isLoadCompleted } from "@/store";
+import { isLoadCompleted, theme } from "@/store";
 import { computed, watch, onBeforeMount, onMounted, ref } from "vue";
 const isShow = ref<boolean>(true);
 const barValue = ref<string>("0");
@@ -42,19 +52,26 @@ const start = async () => {
 const finish = () => {
   transition.value = "width 0.8s ease";
   barValue.value = "100%";
+  setTimeout(() => {
+    loadingMask.value.style.opacity = 0;
     setTimeout(() => {
-      loadingMask.value.style.opacity = 0;
-      setTimeout(() => {
-        isShow.value = false;
-      }, 200);
-    }, 800);
+      isShow.value = false;
+    }, 200);
+  }, 800);
 };
 </script>
 <style lang="less" scoped>
-#loading-mask {
+.loading-mask-dark-theme {
+  background-color: #161d22;
   --loadingbar-background-color: #2c2b30;
   --loadingbar-prospect-color: #ece5d8;
-  background-color: #161d22;
+}
+.loading-mask-light-theme {
+  background-color: #ffffff;
+  --loadingbar-background-color: #f5f5f5;
+  --loadingbar-prospect-color: #666666;
+}
+#loading-mask {
   height: 100vh;
   width: 100vw;
   z-index: 998;
@@ -64,34 +81,39 @@ const finish = () => {
   align-items: center;
   transition: opacity 0.2s;
   pointer-events: none;
-  .loading-bar {
-    height: 50px;
-    user-select: none;
+  user-select: none;
+
+  .container {
     overflow: hidden;
     min-width: 400px;
-    position: relative;
-    img {
-      width: 400px;
-      filter: brightness(0.2);
-    }
     @media only screen and (max-width: 540px) {
-      transform: scale(0.8);
+      transform: scale(0.85);
     }
     @media only screen and (max-width: 420px) {
       transform: scale(0.7);
     }
-  }
-  .loading-bar::after {
-    position: absolute;
-    top: 0;
-    left: 0;
-    content: "";
-    z-index: 999;
-    background: v-bind(background);
-    background-size: 400px 50px;
-    width: v-bind(barValue);
-    height: 50px;
-    transition: v-bind(transition);
+    .loading-bar {
+      height: 50px;
+      min-width: 400px;
+      position: relative;
+      background: v-bind(background);
+      background-size: 400px 50px;
+      transform: translateY(100%);
+      filter: drop-shadow(0 -50px 0 var(--loadingbar-background-color));
+      &::after {
+        position: absolute;
+        top: 0;
+        left: 0;
+        content: "";
+        z-index: 999;
+        background: v-bind(background);
+        background-size: 400px 50px;
+        width: v-bind(barValue);
+        height: 50px;
+        transition: v-bind(transition);
+        filter: drop-shadow(0 -50px 0  var(--loadingbar-prospect-color));
+      }
+    }
   }
 }
 </style>
