@@ -2,6 +2,7 @@
   <div id="markdown" ref="markdown">
     <n-scrollbar>
       <div v-html="content" class="markdown-content"></div>
+      <n-back-top :right="50" />
     </n-scrollbar>
     <div class="markdown-outline">
       <n-anchor affix :trigger-top="80" :bound="80" offset-target="#markdown">
@@ -24,9 +25,8 @@
 <script setup lang="ts">
 import { ref, nextTick, watch, watchEffect } from "vue";
 import { getMarkedContent } from "@/utils/marked";
-import { NAnchor, NAnchorLink } from "naive-ui";
 import { computed } from "@vue/reactivity";
-import { NScrollbar } from "naive-ui";
+import { NScrollbar, NBackTop, NAnchor, NAnchorLink } from "naive-ui";
 import { currentWritingText } from "@/store";
 
 const content = computed(() => {

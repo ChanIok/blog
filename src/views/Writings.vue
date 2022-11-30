@@ -16,24 +16,17 @@
         <LocalNavVue :menuOptions="writingList" @onClick="onClickCallback" />
       </n-scrollbar>
     </div>
-    <div
-      class="writings-container"
-      :class="{
-        'dark-theme': theme == 'dark',
-        'light-theme': theme != 'dark',
-      }"
-    >
+    <div class="writings-container">
       <div class="content">
         <MarkdownVue />
       </div>
-      <n-back-top :right="50" />
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
 import { onMounted, ref, nextTick } from "vue";
-import { NBackTop, NScrollbar } from "naive-ui";
+import {  NScrollbar } from "naive-ui";
 import SidebarVue from "@/components/Sidebar.vue";
 import LocalNavVue from "@/components/LocalNav.vue";
 import { getLatestState, CNDecode } from "@/utils/artools";
@@ -103,7 +96,18 @@ onMounted(async () => {
 </script>
 
 <style lang="less" scoped>
-@import "@/style/theme.less";
+@import "@/style/varibles.less";
+.default-dark-theme {
+  background-color: @default-dark-background-color;
+  color: @dark-color;
+  --theme-border-color: rgba(64, 64, 64);
+}
+
+.light-theme {
+  background-color: @light-background-color;
+  color: @light-color;
+  --theme-border-color: rgba(192, 192, 192);
+}
 
 #writings {
   width: 100%;
@@ -117,7 +121,7 @@ onMounted(async () => {
     height: 100%;
     box-sizing: border-box;
     padding: 0px;
-    border-right: 1px solid rgba(128, 128, 128, 0.2);
+    border-right: 1px solid var(--theme-border-color);
     @media only screen and (max-width: 960px) {
       display: none;
     }
@@ -126,9 +130,9 @@ onMounted(async () => {
     display: none;
     z-index: 99;
     width: 100%;
-    border-bottom: 1px solid rgba(128, 128, 128, 0.2);
-    border-top: 1px solid rgba(128, 128, 128, 0.2);
+    border-bottom: 1px solid var(--theme-border-color);
     box-sizing: border-box;
+    flex: 0;
     @media only screen and (max-width: 960px) {
       display: block;
     }
@@ -137,6 +141,7 @@ onMounted(async () => {
     display: flex;
     width: 100%;
     flex: 1;
+    overflow: auto;
     .content {
       box-sizing: border-box;
       height: 100%;
@@ -144,6 +149,7 @@ onMounted(async () => {
       overflow: auto;
       @media only screen and (max-width: 960px) {
         padding: 10px 10px 0 10px;
+        flex-shrink: 0;
       }
     }
   }

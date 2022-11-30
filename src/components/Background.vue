@@ -37,12 +37,15 @@ onMounted(() => {
 
 <style lang="less" scoped>
 #background {
+  width: 100%;
+  height: 100%;
+  position: fixed;
+  z-index: -999;
   .background-img {
+    position: fixed;
     width: 100%;
     height: 100%;
     background-size: cover;
-    position: fixed;
-    z-index: -999;
     background-position: 50% 50%;
     @media only screen and (max-width: 480px) {
       background-position: 25% 50%;
@@ -56,7 +59,6 @@ onMounted(() => {
     width: 100%;
     height: 100%;
     position: fixed;
-    z-index: -998;
     background-color: rgba(0, 0, 0, 0.1);
   }
 }

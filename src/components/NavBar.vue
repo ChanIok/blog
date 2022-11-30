@@ -116,7 +116,18 @@ const activeKey = ref<string | null>(null);
 </script>
 
 <style lang="less" scoped>
-@import "@/style/theme.less";
+@import "@/style/varibles.less";
+
+.default-dark-theme {
+  background-color: @default-dark-background-color;
+  color: @dark-color;
+}
+
+.light-theme {
+  background-color: @light-background-color;
+  color: @light-color;
+}
+
 #nav-bar {
   display: flex;
   justify-content: space-between;
