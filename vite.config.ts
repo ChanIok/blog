@@ -6,7 +6,7 @@ import { visualizer } from "rollup-plugin-visualizer";
 export default defineConfig({
   // plugins: [vue(), visualizer({ open: true })],
   plugins: [vue()],
-  base: "",
+  base: "./",
   resolve: {
     // 配置路径别名
     alias: {

@@ -5,7 +5,13 @@
       <n-back-top :right="50" />
     </n-scrollbar>
     <div class="markdown-outline">
-      <n-anchor affix :trigger-top="80" :bound="80" offset-target="#markdown">
+      <n-anchor
+        affix
+        :trigger-top="80"
+        :bound="70"
+        offset-target="#markdown"
+        @click="onClickAnchor"
+      >
         <n-anchor-link
           v-for="item in anchors"
           :title="item.node.innerText"
@@ -23,12 +29,14 @@
 </template>
 
 <script setup lang="ts">
-import { ref, nextTick, watch, watchEffect } from "vue";
+import { ref, nextTick, watch } from "vue";
 import { getMarkedContent } from "@/utils/marked";
 import { computed } from "@vue/reactivity";
 import { NScrollbar, NBackTop, NAnchor, NAnchorLink } from "naive-ui";
 import { currentWritingText } from "@/store";
-
+const onClickAnchor = (e: PointerEvent) => {
+  e.preventDefault();
+};
 const content = computed(() => {
   return getMarkedContent(currentWritingText.value);
 });

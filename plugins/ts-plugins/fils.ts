@@ -156,7 +156,7 @@ const getLatestManifest = async (id: string) => {
 const a = async () => {
   differentialUpload(
     "./dist",
-    await getLatestManifest("RNSaKOuSCt5Pf8euirpV-8JXHgkbn5NEez2mNCiZVHo")
+    await getLatestManifest("tCjDCSGRy-0aur--XWxwxn8htbFNfidEQjwiCvv2gKw")
   );
 };
 a();
