@@ -8,6 +8,6 @@ export const isLoadCompleted = ref<boolean>(false);
 
 export const windowWidth = ref<number>(0);
 
-export const isDark = ref<boolean>(false);
+export const isDark = ref<boolean>(true);
 
 export const currentWritingText = ref<string>("");
