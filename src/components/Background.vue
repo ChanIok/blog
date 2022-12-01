@@ -3,8 +3,7 @@
     <div
       class="background-img"
       :class="{
-        'default-dark-theme': theme == 'dark',
-        'light-theme': theme != 'dark',
+        'light-theme': !isDark,
       }"
       :style="{ backgroundImage: 'url(' + backgroundImg + ')' }"
     ></div>
@@ -13,25 +12,17 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted } from "vue";
 import Liyue from "@/assets/Liyue_1.jpg";
 import Venti from "@/assets/Venti.jpg";
-import { isLoadCompleted, theme } from "@/store";
+import { isDark } from "@/store";
 import { computed } from "@vue/reactivity";
 
 const backgroundImg = computed(() => {
-  if (theme.value == "dark") {
+  if (isDark.value) {
     return Liyue;
   } else {
     return Venti;
   }
-});
-onMounted(() => {
-  const image = new Image();
-  image.src = backgroundImg.value;
-  image.onload = () => {
-    isLoadCompleted.value = true;
-  };
 });
 </script>
 

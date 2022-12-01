@@ -5,8 +5,7 @@
       <div
         class="card"
         :class="{
-          'default-dark-theme': theme == 'dark',
-          'light-theme': theme != 'dark',
+          'light-theme': !isDark,
         }"
       >
         <div class="header">
@@ -24,11 +23,10 @@
 
 <script setup lang="ts">
 import UniverseVue from "@/components/Universe.vue";
-import { theme } from "@/store";
+import { isDark } from "@/store";
 </script>
 
 <style lang="less" scoped>
-@import "@/style/varibles.less";
 #welcome-page {
   width: 100%;
   height: 100%;
@@ -42,7 +40,6 @@ import { theme } from "@/store";
       text-shadow: 2px 3px 5px rgba(128, 128, 128, 0.3);
     }
     .card {
-      font-family: @font-family;
       display: flex;
       flex-direction: column;
       max-width: 500px;

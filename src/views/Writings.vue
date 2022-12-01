@@ -1,19 +1,21 @@
 <template>
-  <div
-    id="writings"
-    :class="{
-      'default-dark-theme': theme == 'dark',
-      'light-theme': theme != 'dark',
-    }"
-  >
+  <div id="writings">
     <div class="sidebar-wrapper">
       <n-scrollbar>
-        <SidebarVue :menuOptions="writingList" @onClick="onClickCallback" />
+        <SidebarVue
+          :menuOptions="writingList"
+          :isloadCompleted="isListloadCompleted"
+          @onClick="onClickCallback"
+        />
       </n-scrollbar>
     </div>
     <div class="local-nav-wrapper">
       <n-scrollbar>
-        <LocalNavVue :menuOptions="writingList" @onClick="onClickCallback" />
+        <LocalNavVue
+          :menuOptions="writingList"
+          :isloadCompleted="isListloadCompleted"
+          @onClick="onClickCallback"
+        />
       </n-scrollbar>
     </div>
     <div class="writings-container">
@@ -27,16 +29,16 @@
 
 <script setup lang="ts">
 import { onMounted, ref, nextTick, h } from "vue";
-import { NScrollbar } from "naive-ui";
+import { NScrollbar, NEllipsis } from "naive-ui";
 import SidebarVue from "@/components/Sidebar.vue";
 import LocalNavVue from "@/components/LocalNav.vue";
 import { getLatestState, CNDecode } from "@/utils/artools";
 import axios from "axios";
 import { contractAddress } from "@/config";
-import { loadingBarAction, theme, currentWritingText } from "@/store";
+import { loadingBarAction, currentWritingText } from "@/store";
 import MarkdownVue from "@/components/Markdown.vue";
-import WritingIntroductionVue from "@/components/WritingIntroduction.vue";
-import { NEllipsis } from "naive-ui";
+import WritingIntroductionVue from "@/components/Introduction.vue";
+const isListloadCompleted = ref<boolean>(false);
 const showIntroduction = ref<boolean>(true);
 const writingList = ref<any>([]);
 const onClickCallback = async (e: any) => {
@@ -88,6 +90,7 @@ const getWritingList = async () => {
     writingList.value.push(catalogue[key]);
   }
   writingList.value.sort();
+  isListloadCompleted.value = true;
 };
 onMounted(async () => {
   loadingBarAction.value = "start";
@@ -101,23 +104,13 @@ onMounted(async () => {
 </script>
 
 <style lang="less" scoped>
-@import "@/style/varibles.less";
-.default-dark-theme {
-  background-color: @default-dark-background-color;
-  color: @dark-color;
-  --theme-border-color: rgba(64, 64, 64);
-}
-
-.light-theme {
-  background-color: @light-background-color;
-  color: @light-color;
-  --theme-border-color: rgba(192, 192, 192);
-}
-
 #writings {
   width: 100%;
   display: flex;
   height: 100%;
+  background-color: var(--theme-bg);
+  transition: color 0.2s cubic-bezier(0.4, 0, 0.2, 1) 0s,
+    background-color 0.2s cubic-bezier(0.4, 0, 0.2, 1) 0s;
   @media only screen and (max-width: 960px) {
     flex-direction: column;
   }
@@ -126,7 +119,7 @@ onMounted(async () => {
     height: 100%;
     box-sizing: border-box;
     padding: 0px;
-    border-right: 1px solid var(--theme-border-color);
+    border-right: 1px solid var(--theme-border);
     @media only screen and (max-width: 960px) {
       display: none;
     }
@@ -135,7 +128,7 @@ onMounted(async () => {
     display: none;
     z-index: 99;
     width: 100%;
-    border-bottom: 1px solid var(--theme-border-color);
+    border-bottom: 1px solid var(--theme-border);
     box-sizing: border-box;
     flex: 0;
     @media only screen and (max-width: 960px) {

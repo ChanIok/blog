@@ -1,11 +1,5 @@
 <template>
-  <div
-    id="nav-bar"
-    :class="{
-      'default-dark-theme': theme == 'dark',
-      'light-theme': theme != 'dark',
-    }"
-  >
+  <div id="nav-bar">
     <div class="menu-wrapper">
       <n-menu
         class="n-menu"
@@ -16,7 +10,7 @@
     </div>
     <div class="options-wrapper">
       <n-switch
-        v-model:value="lightActive"
+        v-model:value="LightActive"
         size="medium"
         :rail-style="railStyle"
       >
@@ -40,22 +34,22 @@ import {
   BookOutline as BookIcon,
   SunnyOutline,
   MoonSharp,
+  ChatboxEllipsesOutline,
 } from "@vicons/ionicons5";
 
 import { RouterLink } from "vue-router";
-import { theme } from "@/store";
+import { isDark } from "@/store";
 
 function renderIcon(icon: Component) {
   return () => h(NIcon, null, { default: () => h(icon) });
 }
 
-const lightActive = computed({
+const LightActive = computed({
   get() {
-    return theme.value == "dark" ? false : true;
+    return !isDark.value;
   },
-
   set(newValue) {
-    theme.value = newValue ? "light" : "dark";
+    isDark.value = !newValue;
   },
 });
 
@@ -110,24 +104,26 @@ const menuOptions: MenuOption[] = [
     key: "writings",
     icon: renderIcon(BookIcon),
   },
+  {
+    label: () =>
+      h(
+        RouterLink,
+        {
+          to: {
+            path: "/comments",
+          },
+        },
+        { default: () => "留言" }
+      ),
+    key: "comments",
+    icon: renderIcon(ChatboxEllipsesOutline),
+  },
 ];
 
 const activeKey = ref<string | null>(null);
 </script>
 
 <style lang="less" scoped>
-@import "@/style/varibles.less";
-
-.default-dark-theme {
-  background-color: @default-dark-background-color;
-  color: @dark-color;
-}
-
-.light-theme {
-  background-color: @light-background-color;
-  color: @light-color;
-}
-
 #nav-bar {
   display: flex;
   justify-content: space-between;

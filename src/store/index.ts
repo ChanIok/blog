@@ -1,4 +1,4 @@
-import { computed, ref } from "vue";
+import { ref } from "vue";
 
 type ILoadingBarAction = "error" | "finish" | "start" | null;
 
@@ -8,6 +8,6 @@ export const isLoadCompleted = ref<boolean>(false);
 
 export const windowWidth = ref<number>(0);
 
-export const theme = ref<string>("dark");
+export const isDark = ref<boolean>(false);
 
 export const currentWritingText = ref<string>("");

@@ -1,25 +1,16 @@
 <template>
-  <div
-    id="loading-mask"
-    v-if="isShow"
-    ref="loadingMask"
-    :class="{
-      'loading-mask-dark-theme': theme == 'dark',
-      'loading-mask-light-theme': theme != 'dark',
-    }"
-  >
+  <div id="loading-mask" v-if="isShow" ref="loadingMask">
     <div class="container">
-      <div
-        class="loading-bar"
-      ></div>
+      <div class="loading-bar"></div>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
 import { loadingbarImg } from "@/assets/loadingbarImg";
-import { isLoadCompleted, theme } from "@/store";
-import { computed, watch, onBeforeMount, onMounted, ref } from "vue";
+import { isLoadCompleted } from "@/store";
+import { computed, watch, onMounted, ref } from "vue";
+import { init } from "@/utils/responsive";
 const isShow = ref<boolean>(true);
 const barValue = ref<string>("0");
 const transition = ref<string>("width 0.6s ease");
@@ -28,26 +19,12 @@ const loadingMask = ref<any>();
 const background = computed(() => {
   return `url(${loadingbarImg}) no-repeat`;
 });
-
-onMounted(() => {
-  const image = new Image();
-  image.src = loadingbarImg;
-  image.onload = () => {
-    start();
-  };
-});
-watch(isLoadCompleted, (val) => {
-  if (val) {
-    setTimeout(() => {
-      finish();
-    }, 10);
-  }
-});
 const start = async () => {
   transition.value = "width 5s ease";
   setTimeout(() => {
     barValue.value = "80%";
   }, 5);
+  init();
 };
 const finish = () => {
   transition.value = "width 0.8s ease";
@@ -59,18 +36,24 @@ const finish = () => {
     }, 200);
   }, 800);
 };
+onMounted(() => {
+  const image = new Image();
+  image.src = loadingbarImg;
+  image.onload = () => {
+    start();
+  };
+});
+watch(isLoadCompleted, (val) => {
+  console.log("complete");
+  if (val) {
+    setTimeout(() => {
+      finish();
+    }, 10);
+  }
+});
 </script>
+
 <style lang="less" scoped>
-.loading-mask-dark-theme {
-  background-color: #161d22;
-  --loadingbar-background-color: #2c2b30;
-  --loadingbar-prospect-color: #ece5d8;
-}
-.loading-mask-light-theme {
-  background-color: #ffffff;
-  --loadingbar-background-color: #f5f5f5;
-  --loadingbar-prospect-color: #666666;
-}
 #loading-mask {
   height: 100vh;
   width: 100vw;
@@ -80,8 +63,9 @@ const finish = () => {
   justify-content: center;
   align-items: center;
   transition: opacity 0.2s;
-  pointer-events: none;
+
   user-select: none;
+  background: var(--theme-loading-mask-bg);
 
   .container {
     overflow: hidden;
@@ -99,7 +83,7 @@ const finish = () => {
       background: v-bind(background);
       background-size: 400px 50px;
       transform: translateY(100%);
-      filter: drop-shadow(0 -50px 0 var(--loadingbar-background-color));
+      filter: drop-shadow(0 -50px 0 var(--theme-loadingbar-background-color));
       &::after {
         position: absolute;
         top: 0;
@@ -111,7 +95,7 @@ const finish = () => {
         width: v-bind(barValue);
         height: 50px;
         transition: v-bind(transition);
-        filter: drop-shadow(0 -50px 0  var(--loadingbar-prospect-color));
+        filter: drop-shadow(0 -50px 0 var(--theme-loadingbar-prospect-color));
       }
     }
   }

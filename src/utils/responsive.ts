@@ -1,5 +1,9 @@
-import { windowWidth, theme } from "@/store";
+import { windowWidth, isDark, isLoadCompleted } from "@/store";
 import { watch } from "vue";
+
+import Liyue from "@/assets/Liyue_1.jpg";
+import Venti from "@/assets/Venti.jpg";
+const imgArr = [Liyue, Venti];
 
 const onResize = () => {
   window.onresize = () => {
@@ -14,20 +18,42 @@ const loadThemeConfig = () => {
   const storageTheme = localStorage.getItem("theme");
   if (storageTheme == undefined || storageTheme == null) {
     localStorage.setItem("theme", "dark");
+  } else if (storageTheme == "dark") {
+    isDark.value = true;
   } else {
-    theme.value = storageTheme;
+    isDark.value = false;
   }
 };
+
 const onThemeChange = () => {
   watch(
-    () => theme.value,
+    () => isDark.value,
     (value) => {
-      localStorage.setItem("theme", value);
+      if (value) {
+        localStorage.setItem("theme", "dark");
+      } else {
+        localStorage.setItem("theme", "light");
+      }
     }
   );
 };
-export const init = () => {
+
+const loadImg = async () => {
+  return await Promise.all(
+    imgArr.map((path) => {
+      new Promise((resolve) => {
+        const image = new Image();
+        image.src = path;
+        image.onload = () => resolve(image);
+      });
+    })
+  );
+};
+
+export const init = async () => {
   onResize();
   loadThemeConfig();
   onThemeChange();
+  await loadImg();
+  isLoadCompleted.value = true;
 };
