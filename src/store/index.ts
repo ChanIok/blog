@@ -11,3 +11,5 @@ export const windowWidth = ref<number>(0);
 export const isDark = ref<boolean>(true);
 
 export const currentWritingText = ref<string>("");
+
+export const manifest = ref<any>();

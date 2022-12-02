@@ -32,15 +32,17 @@ import { onMounted, ref, nextTick, h } from "vue";
 import { NScrollbar, NEllipsis } from "naive-ui";
 import SidebarVue from "@/components/Sidebar.vue";
 import LocalNavVue from "@/components/LocalNav.vue";
-import { getLatestState, CNDecode } from "@/utils/artools";
+import { CNDecode } from "@/utils/artools";
+import { loadManifest } from "@/utils/common";
 import axios from "axios";
-import { contractAddress } from "@/config";
-import { loadingBarAction, currentWritingText } from "@/store";
+import { loadingBarAction, currentWritingText, manifest } from "@/store";
 import MarkdownVue from "@/components/Markdown.vue";
 import WritingIntroductionVue from "@/components/Introduction.vue";
+
 const isListloadCompleted = ref<boolean>(false);
 const showIntroduction = ref<boolean>(true);
 const writingList = ref<any>([]);
+
 const onClickCallback = async (e: any) => {
   loadingBarAction.value = "start";
   const res = await axios.get(
@@ -53,13 +55,16 @@ const onClickCallback = async (e: any) => {
 };
 
 const getWritingList = async () => {
-  const manifest = await getLatestState(contractAddress);
-  const paths = manifest.paths;
+  if (!manifest.value) {
+    await loadManifest();
+  }
+  const paths = manifest.value.paths;
   const catalogue: any[] = [];
   for (const key in paths) {
     if (key.indexOf("writings/") != 0) {
       continue;
     }
+    await nextTick()
     const keys = key.split("/");
     keys.shift();
     keys.reduce((pre, cur, i) => {
@@ -91,7 +96,9 @@ const getWritingList = async () => {
   }
   writingList.value.sort();
   isListloadCompleted.value = true;
+ 
 };
+
 onMounted(async () => {
   loadingBarAction.value = "start";
   try {

@@ -1,8 +1,10 @@
-import { windowWidth, isDark, isLoadCompleted } from "@/store";
+import { windowWidth, isDark, isLoadCompleted, manifest } from "@/store";
 import { watch } from "vue";
 
 import Liyue from "@/assets/Liyue_1.jpg";
 import Venti from "@/assets/Venti.jpg";
+
+import { getLatestManifestId, getLatestState } from "./artools";
 const imgArr = [Liyue, Venti];
 
 const onResize = () => {
@@ -50,10 +52,26 @@ const loadImgs = async () => {
   );
 };
 
+export const loadManifest = async () => {
+  const storageManifest = localStorage.getItem("manifest");
+  if (storageManifest) {
+    manifest.value = JSON.parse(storageManifest);
+  }
+  getLatestManifestId()
+    .then(async (txId) => {
+      return getLatestState(txId);
+    })
+    .then((state) => {
+      manifest.value = state;
+      localStorage.setItem("manifest", JSON.stringify(state));
+    });
+};
+
 export const init = async () => {
   onResize();
   loadThemeConfig();
   onThemeChange();
   await loadImgs();
+  loadManifest();
   isLoadCompleted.value = true;
 };

@@ -9,13 +9,8 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted } from "vue";
-
 import { darkTheme, lightTheme, NConfigProvider, NGlobalStyle } from "naive-ui";
 import { isDark } from "@/store";
-onMounted(() => {
-
-});
 </script>
 
 <style lang="less" scoped>
