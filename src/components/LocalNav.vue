@@ -6,6 +6,12 @@
           <MenuOutline />
         </n-icon>
         <span style="margin-left: 10px"> 浏览 </span>
+        <transition name="spin-wrapper">
+          <n-spin
+            size="small"
+            style="margin-left: 10px; transform: scale(0.7)"
+            v-if="!props.isloadCompleted"
+        /></transition>
       </n-button>
     </div>
     <n-drawer
@@ -26,11 +32,18 @@
   </div>
 </template>
 <script setup lang="ts">
-import { NButton, NIcon, NDrawer, NDrawerContent, NMenu } from "naive-ui";
+import {
+  NButton,
+  NIcon,
+  NDrawer,
+  NDrawerContent,
+  NMenu,
+  NSpin,
+} from "naive-ui";
 import { MenuOutline } from "@vicons/ionicons5";
 import { ref } from "vue";
 const emit = defineEmits(["onClick"]);
-const props = defineProps(["menuOptions"]);
+const props = defineProps(["menuOptions", "isloadCompleted"]);
 const handleUpdateValue = (e: any) => {
   emit("onClick", e);
   active.value = false;
@@ -55,7 +68,12 @@ const activate = () => {
     box-sizing: border-box;
     padding: 0 10px 0 5px;
     align-items: center;
-  
+    .spin-wrapper-leave-active {
+      transition: opacity 0.5s;
+    }
+    .spin-wrapper-leave-to {
+      opacity: 0;
+    }
   }
 }
 </style>
