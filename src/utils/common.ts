@@ -38,10 +38,10 @@ const onThemeChange = () => {
   );
 };
 
-const loadImg = async () => {
+const loadImgs = async () => {
   return await Promise.all(
     imgArr.map((path) => {
-      new Promise((resolve) => {
+      return new Promise((resolve) => {
         const image = new Image();
         image.src = path;
         image.onload = () => resolve(image);
@@ -54,6 +54,6 @@ export const init = async () => {
   onResize();
   loadThemeConfig();
   onThemeChange();
-  await loadImg();
+  await loadImgs();
   isLoadCompleted.value = true;
 };

@@ -10,7 +10,7 @@
 import { loadingbarImg } from "@/assets/loadingbarImg";
 import { isLoadCompleted } from "@/store";
 import { computed, watch, onMounted, ref } from "vue";
-import { init } from "@/utils/responsive";
+import { init } from "@/utils/common";
 const isShow = ref<boolean>(true);
 const barValue = ref<string>("0");
 const transition = ref<string>("width 0.6s ease");
@@ -43,14 +43,16 @@ onMounted(() => {
     start();
   };
 });
-watch(isLoadCompleted, (val) => {
-  console.log("complete");
-  if (val) {
-    setTimeout(() => {
-      finish();
-    }, 10);
+watch(
+  () => isLoadCompleted.value,
+  (val) => {
+    if (val) {
+      setTimeout(() => {
+        finish();
+      }, 10);
+    }
   }
-});
+);
 </script>
 
 <style lang="less" scoped>
