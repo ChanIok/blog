@@ -53,18 +53,23 @@ const loadImgs = async () => {
 };
 
 export const loadManifest = async () => {
+  async function setNewManifest() {
+    await getLatestManifestId()
+      .then(async (txId) => {
+        return getLatestState(txId);
+      })
+      .then((state) => {
+        manifest.value = state;
+        localStorage.setItem("manifest", JSON.stringify(state));
+      });
+  }
   const storageManifest = localStorage.getItem("manifest");
   if (storageManifest) {
     manifest.value = JSON.parse(storageManifest);
+    setNewManifest();
+  } else {
+    await setNewManifest();
   }
-  getLatestManifestId()
-    .then(async (txId) => {
-      return getLatestState(txId);
-    })
-    .then((state) => {
-      manifest.value = state;
-      localStorage.setItem("manifest", JSON.stringify(state));
-    });
 };
 
 export const init = async () => {
@@ -72,6 +77,6 @@ export const init = async () => {
   loadThemeConfig();
   onThemeChange();
   await loadImgs();
-  loadManifest();
+  await loadManifest();
   isLoadCompleted.value = true;
 };
