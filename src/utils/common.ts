@@ -33,8 +33,10 @@ const onThemeChange = () => {
     (value) => {
       if (value) {
         localStorage.setItem("theme", "dark");
+        window.parent.postMessage({ action: "setTheme", data: "dark" }, "*");
       } else {
         localStorage.setItem("theme", "light");
+        window.parent.postMessage({ action: "setTheme", data: "light" }, "*");
       }
     }
   );
@@ -73,6 +75,7 @@ export const loadManifest = async () => {
 };
 
 export const init = async () => {
+  window.parent.postMessage({ action: "startLoaing" }, "*");
   onResize();
   loadThemeConfig();
   onThemeChange();

@@ -65,7 +65,6 @@ watch(
   justify-content: center;
   align-items: center;
   transition: opacity 0.2s;
-
   user-select: none;
   background: var(--theme-loading-mask-bg);
 
