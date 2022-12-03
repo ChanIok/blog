@@ -75,11 +75,12 @@ export const loadManifest = async () => {
 };
 
 export const init = async () => {
-  window.parent.postMessage({ action: "startLoaing" }, "*");
+  window.parent.postMessage({ action: "continueLoading" }, "*");
   onResize();
   loadThemeConfig();
   onThemeChange();
   await loadImgs();
   await loadManifest();
+  window.parent.postMessage({ action: "loadCompleted" }, "*");
   isLoadCompleted.value = true;
 };

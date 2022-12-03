@@ -139,7 +139,6 @@ export const differentialUpload = async (
   const res = await bundlr.upload(manifestContent, {
     tags: [
       { name: "Content-type", value: "application/x.arweave-manifest+json" },
-      { name: "App-Name", value: "PlaneOfEuthymia" },
     ],
   });
   if (res.id == undefined) {
@@ -156,8 +155,8 @@ const getLatestManifest = async (id: string) => {
 
 const a = async () => {
   differentialUpload(
-    "./dist",
-    await getLatestManifest("dtwaxXqjRpIzX-4SDOB0E06898-FqfimsHBJrYo8ZFg")
+    "../web-wrapper/dist",
+    await getLatestManifest("me9C-APVkyozO9_ysWa4c3iwIlojwrzx9Fkyt006NN8")
   );
 };
 a();

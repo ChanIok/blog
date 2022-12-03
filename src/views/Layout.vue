@@ -1,6 +1,5 @@
 <template>
   <div id="layout">
-    <LoadingMaskVue />
     <BackgroundVue />
     <div class="layout-container">
       <n-layout-header class="layout-header">
@@ -19,7 +18,6 @@
 <script setup lang="ts">
 import NavBarVue from "@/components/NavBar.vue";
 import LoadingBarVue from "@/components/LoadingBar.vue";
-import LoadingMaskVue from "@/components/LoadingMask.vue";
 import BackgroundVue from "@/components/Background.vue";
 import { NLoadingBarProvider, NLayoutHeader, NLayoutContent } from "naive-ui";
 </script>

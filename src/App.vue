@@ -11,6 +11,11 @@
 <script setup lang="ts">
 import { darkTheme, lightTheme, NConfigProvider, NGlobalStyle } from "naive-ui";
 import { isDark } from "@/store";
+import { init } from "@/utils/common";
+import { onMounted } from "vue";
+onMounted(() => {
+  init();
+});
 </script>
 
 <style lang="less" scoped>
