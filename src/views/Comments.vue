@@ -2,7 +2,7 @@
   <div id="comments">
     <div class="container">
       <div class="header">
-        <n-el tag="span"> 你可以在这里写点东西... </n-el>
+        <n-el tag="span"> 这是一块去中心化的留言板，你可以在这里写点东西... </n-el>
         <n-divider />
       </div>
 
@@ -19,7 +19,7 @@ import { isDark } from "@/store";
 import { computed } from "vue";
 const url = computed(() => {
   const s = isDark.value ? "dark" : "light";
-  return `https://embed.0xecho.com.ipns.page?color-theme=${s}&desc=Hi&has-h-padding=true&has-v-padding=true&modules=comment%2Ctip&receiver=chaniok.eth&target_uri=https%3A%2F%2F0xecho.com%2F`;
+  return `https://embed.0xecho.com.ipns.page?color-theme=${s}&desc=Hi&has-h-padding=true&has-v-padding=true&modules=comment%2Ctip&receiver=chaniok.eth&target_uri=https%3A%2F%2Fchaniok.eth.limo%2Fcomments%2Fd5d20`;
 });
 </script>
 

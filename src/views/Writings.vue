@@ -21,87 +21,53 @@
     <div class="writings-container">
       <div class="content">
         <MarkdownVue v-show="!showIntroduction" />
-        <WritingIntroductionVue v-if="showIntroduction" />
+        <IntroductionVue v-if="showIntroduction" />
       </div>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import { onMounted, ref, nextTick, h } from "vue";
-import { NScrollbar, NEllipsis } from "naive-ui";
+import { onMounted, ref, nextTick, watchEffect } from "vue";
+import { NScrollbar } from "naive-ui";
 import SidebarVue from "@/components/Sidebar.vue";
 import LocalNavVue from "@/components/LocalNav.vue";
-import { CNDecode } from "@/utils/artools";
-import { loadManifest } from "@/utils/common";
 import axios from "axios";
 import { loadingBarAction, currentWritingText, manifest } from "@/store";
 import MarkdownVue from "@/components/Markdown.vue";
-import WritingIntroductionVue from "@/components/Introduction.vue";
+import IntroductionVue from "@/components/Introduction.vue";
+import { getWritingsList } from "@/utils/artools";
+import { useRouter, useRoute } from "vue-router";
+const router = useRouter();
+const route = useRoute();
 
 const isListloadCompleted = ref<boolean>(false);
 const showIntroduction = ref<boolean>(true);
 const writingList = ref<any>([]);
 
-const onClickCallback = async (e: any) => {
+const onClickCallback = async (path: any) => {
+  router.push({ path: `/writings/${manifest.value.paths[path].id}` });
+};
+
+watchEffect(async () => {
+  const txId = route.params.txId;
+  if (route.params.txId == undefined || route.params.txId == "") {
+    return;
+  }
+  console.log(route.params);
   loadingBarAction.value = "start";
-  const res = await axios.get(
-    process.env.NODE_ENV == "development" ? CNDecode(e) : e
-  );
+  const res = await axios.get(`https://arweave.net/${txId as string}`);
   currentWritingText.value = res.data;
   await nextTick();
   showIntroduction.value = false;
   loadingBarAction.value = "finish";
-};
-
-const getWritingList = async () => {
-  if (!manifest.value) {
-    await loadManifest();
-  }
-  const paths = manifest.value.paths;
-  const catalogue: any[] = [];
-  for (const key in paths) {
-    if (key.indexOf("writings/") != 0) {
-      continue;
-    }
-    await nextTick();
-    const keys = key.split("/");
-    keys.shift();
-    keys.reduce((pre, cur, i) => {
-      if (i === keys.length - 1) {
-        pre.push({
-          label: () =>
-            h(NEllipsis, null, {
-              default: () => CNDecode(keys[keys.length - 1]),
-            }),
-          key,
-        });
-        return pre;
-      }
-      for (const index in pre) {
-        if (pre[index].key == cur) {
-          return pre[index].children;
-        }
-      }
-      pre.push({
-        label: () => h(NEllipsis, null, { default: () => CNDecode(cur) }),
-        key: cur,
-        children: [],
-      });
-      return pre[pre.length - 1].children;
-    }, catalogue);
-  }
-  for (const key in catalogue) {
-    writingList.value.push(catalogue[key]);
-  }
-  writingList.value.sort();
-  isListloadCompleted.value = true;
-};
+});
 
 onMounted(async () => {
   loadingBarAction.value = "start";
   try {
-    await getWritingList();
+    writingList.value = await getWritingsList();
+    isListloadCompleted.value = true;
   } catch (error) {
     console.log(error);
   }

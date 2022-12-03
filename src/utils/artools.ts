@@ -1,4 +1,8 @@
 import axios from "axios";
+import { nextTick, h } from "vue";
+import { loadManifest } from "./common";
+import { NEllipsis } from "naive-ui";
+import { manifest } from "@/store";
 
 export const getLatestManifestId = async () => {
   const graphql = {
@@ -24,8 +28,47 @@ export const getLatestState = async (txId: string) => {
   return (await axios.get(`https://arweave.net/${txId}/manifest.json`)).data;
 };
 
-export const CNDecode = (str: string) => {
-  str = str.replace(/\$/g, "%");
-  str = decodeURIComponent(str);
-  return str;
+export const getWritingsList = async () => {
+  if (!manifest.value) {
+    await loadManifest();
+  }
+  const paths = manifest.value.paths;
+  const catalogue: any[] = [];
+  const writingList: any[] = [];
+  for (const key in paths) {
+    if (key.indexOf("writings/") != 0) {
+      continue;
+    }
+    await nextTick();
+    const keys = key.split("/");
+    keys.shift();
+    keys.reduce((pre, cur, i) => {
+      if (i === keys.length - 1) {
+        pre.push({
+          label: () =>
+            h(NEllipsis, null, {
+              default: () => keys[keys.length - 1],
+            }),
+          key,
+        });
+        return pre;
+      }
+      for (const index in pre) {
+        if (pre[index].key == cur) {
+          return pre[index].children;
+        }
+      }
+      pre.push({
+        label: () => h(NEllipsis, null, { default: () => cur }),
+        key: cur,
+        children: [],
+      });
+      return pre[pre.length - 1].children;
+    }, catalogue);
+  }
+  for (const key in catalogue) {
+    writingList.push(catalogue[key]);
+  }
+  writingList.sort();
+  return writingList;
 };

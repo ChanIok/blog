@@ -20,50 +20,6 @@ export const getFileToHash = (filesPath: string) => {
   console.log(fileToHash);
 };
 
-export const uploadDir = async (filesPath: string) => {
-  const resolvedBasePath = path.resolve(filesPath);
-  console.log(resolvedBasePath);
-  const paths = globSync("**/*", { cwd: resolvedBasePath, nodir: true });
-  let manifest: Record<string, any> = {
-    manifest: "arweave/paths",
-    version: "0.1.0",
-    index: {
-      path: "index.html",
-    },
-    paths: {},
-  };
-  try {
-    for (const item of paths) {
-      const res = await bundlr.uploadFile(path.resolve(resolvedBasePath, item));
-      if (res.id == undefined) {
-        throw `upload file failed:${item}`;
-      }
-      console.log(`uploaded file:${item}`);
-      manifest.paths[item] = {
-        id: res.id,
-        hash: hash.sha1(
-          fs.readFileSync(path.resolve(resolvedBasePath, item)).toString()
-        ),
-      };
-    }
-
-    const manifestContent = JSON.stringify(manifest);
-    fs.writeFileSync("./dist/manifest.json", manifestContent);
-    const res = await bundlr.upload(manifestContent, {
-      tags: [
-        { name: "Content-type", value: "application/x.arweave-manifest+json" },
-      ],
-    });
-
-    if (res.id == undefined) {
-      throw `upload manifest failed`;
-    }
-    console.log("upload complete");
-  } catch (error) {
-    console.log(error);
-  }
-};
-
 export const CNEncode = (str: string) => {
   str.match(/[\u4E00-\u9FA5]/g)?.forEach((t) => {
     str = str.replace(t, encodeURIComponent(t));
@@ -71,6 +27,7 @@ export const CNEncode = (str: string) => {
   str = str.replace(/%/g, "$");
   return str;
 };
+
 export const differentialUpload = async (
   filesPath: string,
   latestManifest: Record<string, any>
@@ -102,11 +59,9 @@ export const differentialUpload = async (
     const itemHash = hash.sha1(
       fs.readFileSync(path.resolve(resolvedBasePath, item)).toString()
     );
-    // 中文转码
-    let itemEncode = CNEncode(item);
     // 清单中，如果文件内容无更改
     if (itemHash in hashToPath) {
-      manifest.paths[itemEncode] = {
+      manifest.paths[item] = {
         id: hashToPath[itemHash].id,
         hash: itemHash,
       };
@@ -117,7 +72,7 @@ export const differentialUpload = async (
         throw `upload file failed:${item}`;
       }
       console.log(`uploaded file:${item}`);
-      manifest.paths[itemEncode] = {
+      manifest.paths[item] = {
         id: res.id,
         hash: hash.sha1(
           fs.readFileSync(path.resolve(resolvedBasePath, item)).toString()
@@ -157,7 +112,7 @@ const getLatestManifest = async (id: string) => {
 const a = async () => {
   differentialUpload(
     "./dist",
-    await getLatestManifest("dtwaxXqjRpIzX-4SDOB0E06898-FqfimsHBJrYo8ZFg")
+    await getLatestManifest("K0WzERSDJn8fK0IZOJqa-b9vn7bdk53AuPCpfYwTwdI")
   );
 };
 a();

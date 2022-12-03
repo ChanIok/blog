@@ -11,7 +11,7 @@ const routes = [
     redirect: "/",
     children: [
       { path: "", component: WelcomePage },
-      { path: "writings", component: Writings },
+      { path: "writings/:txId?", component: Writings },
       { path: "comments", component: Comments },
     ],
   },
@@ -19,7 +19,6 @@ const routes = [
 
 const router = createRouter({
   history: createWebHashHistory(),
-  // history: createWebHistory(),
   routes,
 });
 
