@@ -8,34 +8,26 @@ import axios from "axios";
 const jwk = JSON.parse(fs.readFileSync("wallet.json").toString());
 const bundlr = new Bundlr("http://node1.bundlr.network", "arweave", jwk);
 
-export const getFileToHash = (filesPath: string) => {
+export const getFileToHash = (filesPath) => {
   const resolvedBasePath = path.resolve(filesPath);
   const paths = globSync("**/*", { cwd: resolvedBasePath, nodir: true });
-  const fileToHash: Record<string, any> = {};
+  const fileToHash = {};
   paths.forEach((filepathTemp) => {
     fileToHash[filepathTemp] = hash.sha1(
       fs.readFileSync(path.resolve(resolvedBasePath, filepathTemp)).toString()
     );
   });
-  console.log(fileToHash);
-};
-
-export const CNEncode = (str: string) => {
-  str.match(/[\u4E00-\u9FA5]/g)?.forEach((t) => {
-    str = str.replace(t, encodeURIComponent(t));
-  });
-  str = str.replace(/%/g, "$");
-  return str;
+  return fileToHash
 };
 
 export const differentialUpload = async (
-  filesPath: string,
-  latestManifest: Record<string, any>
+  filesPath,
+  latestManifest
 ) => {
   const resolvedBasePath = path.resolve(filesPath);
   console.log(resolvedBasePath);
   const paths = globSync("**/*", { cwd: resolvedBasePath, nodir: true });
-  let manifest: Record<string, any> = {
+  let manifest = {
     manifest: "arweave/paths",
     version: "0.1.0",
     index: {
@@ -44,7 +36,7 @@ export const differentialUpload = async (
     paths: {},
   };
   // 文件哈希到文件路径
-  let hashToPath: Record<string, any> = {};
+  let hashToPath = {};
   for (const key in latestManifest.paths) {
     hashToPath[latestManifest.paths[key].hash] = {
       path: key,
@@ -103,16 +95,34 @@ export const differentialUpload = async (
   console.log(`upload complete:${res.id}`);
 };
 
-const getLatestManifest = async (id: string) => {
-  const data = (await axios.get(`https://arweave.net/${id}/manifest.json`))
-    .data;
-  return data;
+export const getLatestManifestId = async () => {
+  const graphql = {
+    query:
+      "query getTransactions($ids: [ID!], $owners: [String!], $recipients: [String!], $tags: [TagFilter!], $bundledIn: [ID!], $block: BlockFilter, $first: Int = 10, $after: String, $sort: SortOrder = HEIGHT_DESC) {\n  transactions(\n    ids: $ids\n    owners: $owners\n    recipients: $recipients\n    tags: $tags\n    bundledIn: $bundledIn\n    block: $block\n    first: $first\n    after: $after\n    sort: $sort\n  ) {\n    pageInfo {\n      hasNextPage\n    }\n    edges {\n      cursor\n      node {\n        id\n        block {\n          height\n          id\n          timestamp\n        }\n        recipient\n        owner {\n          address\n          key\n        }\n        fee {\n          winston\n          ar\n        }\n        quantity {\n          winston\n          ar\n        }\n        tags {\n          name\n          value\n        }\n        data {\n          size\n          type\n        }\n        bundledIn {\n          id\n        }\n      }\n    }\n  }\n}\n",
+    variables: {
+      owners: ["LGphzQz7HJd9E8i2UpzzYK_V6azt1wAZDTJ8iNllka0"],
+      tags: [
+        {
+          name: "App-Name",
+          values: ["PlaneOfEuthymia"],
+        },
+      ],
+      first: 10,
+    },
+    operationName: "getTransactions",
+  };
+  return (await axios.post("https://arweave.net/graphql", graphql)).data.data
+    .transactions.edges[0].node.id;
 };
 
-const a = async () => {
+export const getLatestState = async (txId) => {
+  return (await axios.get(`https://arweave.net/${txId}/manifest.json`)).data;
+};
+
+(async () => {
   differentialUpload(
     "./dist",
-    await getLatestManifest("K0WzERSDJn8fK0IZOJqa-b9vn7bdk53AuPCpfYwTwdI")
+    await getLatestState("GBsoIWawTD42r_HNNtFZ32BICPmLQmx-cqIXuHwayg8")
   );
-};
-a();
+})()
+
