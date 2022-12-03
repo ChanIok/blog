@@ -64,7 +64,7 @@ const getWritingList = async () => {
     if (key.indexOf("writings/") != 0) {
       continue;
     }
-    await nextTick()
+    await nextTick();
     const keys = key.split("/");
     keys.shift();
     keys.reduce((pre, cur, i) => {
@@ -96,7 +96,6 @@ const getWritingList = async () => {
   }
   writingList.value.sort();
   isListloadCompleted.value = true;
- 
 };
 
 onMounted(async () => {

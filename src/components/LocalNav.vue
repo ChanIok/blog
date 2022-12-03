@@ -19,6 +19,8 @@
       :width="drawerWidth"
       placement="left"
       resizable
+      display-directive="show"
+      :native-scrollbar="true"
     >
       <n-drawer-content title="目录" :body-content-style="'padding:5px'">
         <n-menu
@@ -43,7 +45,10 @@ import {
 import { MenuOutline } from "@vicons/ionicons5";
 import { ref } from "vue";
 const emit = defineEmits(["onClick"]);
-const props = defineProps(["menuOptions", "isloadCompleted"]);
+const props = defineProps([
+  "menuOptions",
+  "isloadCompleted",
+]);
 const handleUpdateValue = (e: any) => {
   emit("onClick", e);
   active.value = false;
