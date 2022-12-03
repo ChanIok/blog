@@ -27,6 +27,7 @@ const url = computed(() => {
 #comments {
   width: 100%;
   height: 100%;
+  overflow: hidden;
   display: flex;
   background-color: var(--theme-bg);
   transition: color 0.5s cubic-bezier(0.4, 0, 0.2, 1) 0s,
