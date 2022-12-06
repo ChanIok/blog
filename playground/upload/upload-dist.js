@@ -1,4 +1,4 @@
-import { sync as globSync } from "glob";
+import glob from "glob";
 import path from "path";
 import hash from "object-hash";
 import fs from "fs";
@@ -6,11 +6,11 @@ import Bundlr from "@bundlr-network/client";
 import axios from "axios";
 
 const jwk = JSON.parse(fs.readFileSync("wallet.json").toString());
-const bundlr = new Bundlr("http://node1.bundlr.network", "arweave", jwk);
+const bundlr = new Bundlr.default("http://node1.bundlr.network", "arweave", jwk);
 
 export const getFileToHash = (filesPath) => {
   const resolvedBasePath = path.resolve(filesPath);
-  const paths = globSync("**/*", { cwd: resolvedBasePath, nodir: true });
+  const paths = glob.sync("**/*", { cwd: resolvedBasePath, nodir: true});
   const fileToHash = {};
   paths.forEach((filepathTemp) => {
     fileToHash[filepathTemp] = hash.sha1(
@@ -20,13 +20,14 @@ export const getFileToHash = (filesPath) => {
   return fileToHash
 };
 
+
 export const differentialUpload = async (
   filesPath,
   latestManifest
 ) => {
   const resolvedBasePath = path.resolve(filesPath);
   console.log(resolvedBasePath);
-  const paths = globSync("**/*", { cwd: resolvedBasePath, nodir: true });
+  const paths = glob.sync("**/*", { cwd: resolvedBasePath, nodir: true });
   let manifest = {
     manifest: "arweave/paths",
     version: "0.1.0",
@@ -122,7 +123,7 @@ export const getLatestState = async (txId) => {
 (async () => {
   differentialUpload(
     "./dist",
-    await getLatestState("GBsoIWawTD42r_HNNtFZ32BICPmLQmx-cqIXuHwayg8")
+    await getLatestState("mmre4IV6-vfj2GxfuyovTwUQpN4X4voS9eDhDSKcOF0")
   );
 })()
 

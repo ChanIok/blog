@@ -1,7 +1,16 @@
 <template>
   <div id="markdown" ref="markdown">
     <n-scrollbar>
-      <div v-html="content" class="markdown-content"></div>
+      <div
+        v-html="content"
+        v-viewer.static="{
+          movable: false,
+          toolbar: false,
+          navbar: false,
+          title: false,
+        }"
+        class="markdown-content"
+      ></div>
       <n-back-top :right="50" />
     </n-scrollbar>
     <div class="markdown-outline">
@@ -35,6 +44,7 @@
 import { ref, nextTick, watch } from "vue";
 import { getMarkedContent } from "@/utils/marked";
 import { computed } from "@vue/reactivity";
+
 import {
   NScrollbar,
   NBackTop,
@@ -43,6 +53,7 @@ import {
   NEllipsis,
 } from "naive-ui";
 import { currentWritingText } from "@/store";
+import { title } from "process";
 const onClickAnchor = (e: PointerEvent) => {
   e.preventDefault();
 };
@@ -118,6 +129,18 @@ watch(
     width: 300px;
     @media only screen and (max-width: 1260px) {
       display: none;
+    }
+  }
+}
+</style>
+<style lang="less">
+#markdown {
+  .markdown-content {
+    img {
+      display: block;
+      width: 100%;
+      max-width: 720px;
+      cursor: zoom-in;
     }
   }
 }

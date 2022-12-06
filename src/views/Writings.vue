@@ -38,6 +38,7 @@ import MarkdownVue from "@/components/Markdown.vue";
 import IntroductionVue from "@/components/Introduction.vue";
 import { getWritingsList } from "@/utils/artools";
 import { useRouter, useRoute } from "vue-router";
+import { getWritingLocally } from "@/utils/dev";
 const router = useRouter();
 const route = useRoute();
 
@@ -54,10 +55,16 @@ watchEffect(async () => {
   if (route.params.txId == undefined || route.params.txId == "") {
     return;
   }
-  console.log(route.params);
   loadingBarAction.value = "start";
-  const res = await axios.get(`https://arweave.net/${txId as string}`);
-  currentWritingText.value = res.data;
+
+  if (process.env.NODE_ENV === "development") {
+    currentWritingText.value = await getWritingLocally(txId as string);
+  } else {
+    currentWritingText.value = (
+      await axios.get(`https://arweave.net/${txId as string}`)
+    ).data;
+  }
+
   await nextTick();
   showIntroduction.value = false;
   loadingBarAction.value = "finish";

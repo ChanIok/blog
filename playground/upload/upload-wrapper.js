@@ -1,4 +1,4 @@
-import { sync as globSync } from "glob";
+import glob from "glob";
 import path from "path";
 import hash from "object-hash";
 import fs from "fs";
@@ -6,7 +6,8 @@ import Bundlr from "@bundlr-network/client";
 import axios from "axios";
 
 const jwk = JSON.parse(fs.readFileSync("wallet.json").toString());
-const bundlr = new Bundlr("http://node1.bundlr.network", "arweave", jwk);
+const bundlr = new Bundlr.default("http://node1.bundlr.network", "arweave", jwk);
+
 const distPath = "../web-wrapper/dist"
 
 export const differentialUpload = async (
