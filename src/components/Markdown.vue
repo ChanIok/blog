@@ -3,7 +3,7 @@
     <n-scrollbar>
       <div
         v-html="content"
-        v-viewer.static="{
+        v-viewer="{
           movable: false,
           toolbar: false,
           navbar: false,
