@@ -53,7 +53,6 @@ import {
   NEllipsis,
 } from "naive-ui";
 import { currentWritingText } from "@/store";
-import { title } from "process";
 const onClickAnchor = (e: PointerEvent) => {
   e.preventDefault();
 };

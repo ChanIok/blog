@@ -32,11 +32,14 @@ export const getWritingsList = async () => {
   if (!manifest.value) {
     await loadManifest();
   }
-  const paths = manifest.value.paths;
+  const paths = manifest.value?.paths;
   const catalogue: any[] = [];
   const writingList: any[] = [];
   for (const key in paths) {
     if (key.indexOf("writings/") != 0) {
+      continue;
+    }
+    if (key.indexOf("writings/attachments") == 0) {
       continue;
     }
     await nextTick();

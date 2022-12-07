@@ -1,4 +1,4 @@
-@import url('@/style/varibles.less');
+@import url("@/style/varibles.less");
 html,
 body,
 #app {
@@ -8,4 +8,3 @@ body,
   padding: 0;
   border: 0;
 }
- 

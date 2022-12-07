@@ -1,3 +1,4 @@
+import { IManifest } from "@/typings";
 import { ref } from "vue";
 
 type ILoadingBarAction = "error" | "finish" | "start" | null;
@@ -12,4 +13,4 @@ export const isDark = ref<boolean>(true);
 
 export const currentWritingText = ref<string>("");
 
-export const manifest = ref<any>();
+export const manifest = ref<IManifest>();

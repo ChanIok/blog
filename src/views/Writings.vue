@@ -47,7 +47,7 @@ const showIntroduction = ref<boolean>(true);
 const writingList = ref<any>([]);
 
 const onClickCallback = async (path: any) => {
-  router.push({ path: `/writings/${manifest.value.paths[path].id}` });
+  router.push({ path: `/writings/${manifest.value?.paths[path].id}` });
 };
 
 watchEffect(async () => {
