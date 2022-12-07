@@ -12,8 +12,8 @@
 </template>
 
 <script setup lang="ts">
-import Liyue from "@/assets/Liyue_1.jpg";
-import Venti from "@/assets/Venti.jpg";
+import { Liyue } from "@/assets";
+import { Venti } from "@/assets";
 import { isDark } from "@/store";
 import { computed } from "@vue/reactivity";
 

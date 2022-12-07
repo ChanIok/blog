@@ -1,8 +1,7 @@
 import { windowWidth, isDark, isLoadCompleted, manifest } from "@/store";
 import { watch } from "vue";
-
-import Liyue from "@/assets/Liyue_1.jpg";
-import Venti from "@/assets/Venti.jpg";
+import { Liyue } from "@/assets";
+import { Venti } from "@/assets";
 
 import { getLatestManifestId, getLatestState } from "./artools";
 const imgArr = [Liyue, Venti];
