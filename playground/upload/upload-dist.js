@@ -123,7 +123,7 @@ export const getLatestState = async (txId) => {
 (async () => {
   differentialUpload(
     "./dist",
-    await getLatestState("mmre4IV6-vfj2GxfuyovTwUQpN4X4voS9eDhDSKcOF0")
+    await getLatestState("P7LM_NES122Zf3oVysu451-gnLNcmavytywoOq2ijeI")
   );
 })()
 

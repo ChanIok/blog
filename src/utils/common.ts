@@ -9,11 +9,15 @@ import { getLatestManifestId, getLatestState } from "./artools";
 const imgArr = [Liyue];
 
 const onResize = () => {
-  window.onresize = () => {
+  function setWidth() {
     windowWidth.value =
       window.innerWidth ||
       document.documentElement.clientWidth ||
       document.body.clientWidth;
+  }
+  setWidth();
+  window.onresize = () => {
+    setWidth();
   };
 };
 
