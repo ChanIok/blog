@@ -75,3 +75,18 @@ export const getWritingsList = async () => {
   writingList.sort();
   return writingList;
 };
+
+export const getFulltxId = async (prefix: string) => {
+  if (!manifest.value) {
+    await loadManifest();
+  }
+  const paths = manifest.value?.paths;
+  let txId = "";
+  for (const key in paths) {
+    if (paths[key].id.indexOf(prefix) >= 0) {
+      txId = paths[key].id;
+      break;
+    }
+  }
+  return txId;
+};

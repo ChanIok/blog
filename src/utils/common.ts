@@ -1,10 +1,10 @@
 import { windowWidth, isDark, isLoadCompleted, manifest } from "@/store";
 import { watch } from "vue";
 import { Liyue } from "@/assets";
-import { Venti } from "@/assets";
+// import { Venti } from "@/assets";
 
 import { getLatestManifestId, getLatestState } from "./artools";
-const imgArr = [Liyue, Venti];
+const imgArr = [Liyue];
 
 const onResize = () => {
   window.onresize = () => {

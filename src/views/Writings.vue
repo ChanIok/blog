@@ -36,7 +36,7 @@ import axios from "axios";
 import { loadingBarAction, currentWritingText, manifest } from "@/store";
 import MarkdownVue from "@/components/Markdown.vue";
 import IntroductionVue from "@/components/Introduction.vue";
-import { getWritingsList } from "@/utils/artools";
+import { getFulltxId, getWritingsList } from "@/utils/artools";
 import { useRouter, useRoute } from "vue-router";
 import { getWritingLocally } from "@/utils/dev";
 const router = useRouter();
@@ -51,17 +51,21 @@ const onClickCallback = async (path: any) => {
 };
 
 watchEffect(async () => {
-  const txId = route.params.txId;
+  const txIdTemp = route.params.txId;
   if (route.params.txId == undefined || route.params.txId == "") {
+    return;
+  }
+  const txId = await getFulltxId(txIdTemp as string);
+  if (txId == "") {
     return;
   }
   loadingBarAction.value = "start";
 
   if (process.env.NODE_ENV === "development") {
-    currentWritingText.value = await getWritingLocally(txId as string);
+    currentWritingText.value = await getWritingLocally(txId);
   } else {
     currentWritingText.value = (
-      await axios.get(`https://arweave.net/${txId as string}`)
+      await axios.get(`https://arweave.net/${txId}`)
     ).data;
   }
 

@@ -11,6 +11,7 @@ const routes = [
     redirect: "/",
     children: [
       { path: "", component: WelcomePage },
+      { path: ":txId?", component: Writings },
       { path: "writings/:txId?", component: Writings },
       { path: "comments", component: Comments },
     ],
