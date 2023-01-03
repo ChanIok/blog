@@ -1,3 +1,4 @@
+<!-- 该组件已弃用 -->
 <template>
   <div id="loading-mask" v-if="isShow" ref="loadingMask">
     <div class="container">
