@@ -2,6 +2,7 @@ import { windowWidth, isDark, isLoadCompleted, manifest } from "@/store";
 import { watch } from "vue";
 import { Liyue } from "@/assets";
 import ClipboardJS from "clipboard";
+
 // import { Venti } from "@/assets";
 
 import { getLatestManifestId, getLatestState } from "./artools";
@@ -74,9 +75,13 @@ export const loadManifest = async () => {
   }
 };
 
+export const initUtils = () => {
+  const clipboard = new ClipboardJS(".btn");
+};
+
 export const init = async () => {
   window.parent.postMessage({ action: "continueLoading" }, "*");
-  new ClipboardJS(".btn");
+  initUtils();
   onResize();
   loadThemeConfig();
   onThemeChange();

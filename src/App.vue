@@ -4,12 +4,20 @@
     :theme="isDark ? darkTheme : lightTheme"
   >
     <n-global-style />
-    <router-view :class="{ dark: isDark }"></router-view>
+    <NMessageProvider>
+      <router-view :class="{ dark: isDark }"></router-view>
+    </NMessageProvider>
   </n-config-provider>
 </template>
 
 <script setup lang="ts">
-import { darkTheme, lightTheme, NConfigProvider, NGlobalStyle } from "naive-ui";
+import {
+  darkTheme,
+  lightTheme,
+  NConfigProvider,
+  NGlobalStyle,
+  NMessageProvider,
+} from "naive-ui";
 import { isDark } from "@/store";
 import { init } from "@/utils/common";
 import { onMounted } from "vue";

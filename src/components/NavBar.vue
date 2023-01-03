@@ -9,17 +9,8 @@
       />
     </div>
     <div class="options-wrapper">
-      <div class="share-wrapper">
-        <n-button
-          size="small"
-          quaternary
-          class="btn"
-          :data-clipboard-text="sharingLink"
-        >
-          <template #icon>
-            <n-icon><ShareSocialOutline /></n-icon>
-          </template>
-        </n-button>
+      <div class="share-wrapper" v-if="isShareButtonShow">
+        <ShareButtonVue></ShareButtonVue>
       </div>
 
       <n-switch
@@ -40,21 +31,21 @@
 
 <script setup lang="ts">
 import { h, ref, Component, CSSProperties, watch, computed } from "vue";
-import { NIcon, NMenu, NSwitch, NButton } from "naive-ui";
-
+import { NIcon, NMenu, NSwitch } from "naive-ui";
 import type { MenuOption } from "naive-ui";
+import { useRoute } from "vue-router";
 import {
   LogOutOutline as HomeIcon,
   BookOutline as BookIcon,
   SunnyOutline,
   MoonSharp,
-  ShareSocialOutline,
   ChatboxEllipsesOutline,
 } from "@vicons/ionicons5";
 
+import ShareButtonVue from "@/components/ShareButton.vue";
 import { RouterLink } from "vue-router";
-import { isDark } from "@/store";
-import { useRoute } from "vue-router";
+import { isDark, windowWidth } from "@/store";
+
 function renderIcon(icon: Component) {
   return () => h(NIcon, null, { default: () => h(icon) });
 }
@@ -68,15 +59,10 @@ const LightActive = computed({
   },
 });
 
-const sharingLink = computed(() => {
-  let link = "";
-  link = route.path.replace("/writings/", "").substring(0, 5);
-  if (process.env.NODE_ENV === "development") {
-    link = `http://localhost:5173/#/${link}`;
-  } else {
-    link = `http://chaniok.eth.limo/#/${link}`;
-  }
-  return link;
+const isShareButtonShow = computed(() => {
+  return route.path.indexOf("/writings/") == 0 && windowWidth.value >= 960
+    ? true
+    : false;
 });
 
 const railStyle = ({
