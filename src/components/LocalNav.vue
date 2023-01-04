@@ -77,8 +77,8 @@ const isShareButtonShow = computed(() => {
   .container {
     height: 100%;
     display: flex;
-    justify-content:space-between;
- 
+    justify-content: space-between;
+
     box-sizing: border-box;
     padding: 0 10px 0 5px;
     align-items: center;

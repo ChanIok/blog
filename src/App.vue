@@ -20,10 +20,23 @@ import {
 } from "naive-ui";
 import { isDark } from "@/store";
 import { init } from "@/utils/common";
-import { onMounted } from "vue";
+import { onMounted, watch } from "vue";
+import { useRoute } from "vue-router";
+const route = useRoute();
 onMounted(() => {
   init();
+  onHashChange();
 });
+const onHashChange = () => {
+  watch(
+    () => route.path,
+    (value) => {
+      if (value) {
+        window.parent.postMessage({ action: "setHash", data: value }, "*");
+      }
+    }
+  );
+};
 </script>
 
 <style lang="less" scoped>

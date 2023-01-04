@@ -3,10 +3,13 @@ import { watch } from "vue";
 import { Liyue } from "@/assets";
 import ClipboardJS from "clipboard";
 
-// import { Venti } from "@/assets";
-
+import { Venti } from "@/assets";
 import { getLatestManifestId, getLatestState } from "./artools";
+
 const imgArr = [Liyue];
+const imgArrAsync = [Venti];
+
+let isLoadManifestCompleted = false;
 
 const onResize = () => {
   function setWidth() {
@@ -48,6 +51,10 @@ const onThemeChange = () => {
 };
 
 const loadImgs = async () => {
+  imgArrAsync.map((path) => {
+    const image = new Image();
+    image.src = path;
+  });
   return await Promise.all(
     imgArr.map((path) => {
       return new Promise((resolve) => {
@@ -83,14 +90,27 @@ export const initUtils = () => {
   const clipboard = new ClipboardJS(".btn");
 };
 
+export const onLoadManifest = () => {
+  window.addEventListener("message", function (e) {
+    if (e.data.action == "loadManifest") {
+      localStorage.setItem("manifest", JSON.stringify(e.data.data));
+      manifest.value = e.data.data;
+      isLoadManifestCompleted = true;
+    }
+  });
+};
+
 export const init = async () => {
   window.parent.postMessage({ action: "continueLoading" }, "*");
+  onLoadManifest();
   initUtils();
   onResize();
   loadThemeConfig();
   onThemeChange();
   await loadImgs();
-  await loadManifest();
+  if (!isLoadManifestCompleted) {
+    await loadManifest();
+  }
   window.parent.postMessage({ action: "loadCompleted" }, "*");
   isLoadCompleted.value = true;
 };
