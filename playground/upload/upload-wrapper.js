@@ -16,7 +16,7 @@ export const differentialUpload = async (
 ) => {
   const resolvedBasePath = path.resolve(filesPath);
   console.log(resolvedBasePath);
-  const paths = globSync("**/*", { cwd: resolvedBasePath, nodir: true });
+  const paths = glob.sync("**/*", { cwd: resolvedBasePath, nodir: true});
   let manifest = {
     manifest: "arweave/paths",
     version: "0.1.0",
@@ -41,11 +41,9 @@ export const differentialUpload = async (
     const itemHash = hash.sha1(
       fs.readFileSync(path.resolve(resolvedBasePath, item)).toString()
     );
-    // 中文转码
-    let itemEncode = CNEncode(item);
     // 清单中，如果文件内容无更改
     if (itemHash in hashToPath) {
-      manifest.paths[itemEncode] = {
+      manifest.paths[item] = {
         id: hashToPath[itemHash].id,
         hash: itemHash,
       };
@@ -56,7 +54,7 @@ export const differentialUpload = async (
         throw `upload file failed:${item}`;
       }
       console.log(`uploaded file:${item}`);
-      manifest.paths[itemEncode] = {
+      manifest.paths[item] = {
         id: res.id,
         hash: hash.sha1(
           fs.readFileSync(path.resolve(resolvedBasePath, item)).toString()
