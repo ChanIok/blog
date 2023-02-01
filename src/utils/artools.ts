@@ -1,31 +1,32 @@
-import axios from "axios";
-import { nextTick, h } from "vue";
-import { loadManifest } from "./common";
-import { NEllipsis } from "naive-ui";
-import { manifest } from "@/store";
+import axios from 'axios';
+import { nextTick, h } from 'vue';
+import { loadManifest } from './loader';
+import { NEllipsis } from 'naive-ui';
+import { manifest } from '@/store';
+import { gatewayUrl, owner, appName } from '@/config';
 
 export const getLatestManifestId = async () => {
   const graphql = {
     query:
-      "query getTransactions($ids: [ID!], $owners: [String!], $recipients: [String!], $tags: [TagFilter!], $bundledIn: [ID!], $block: BlockFilter, $first: Int = 10, $after: String, $sort: SortOrder = HEIGHT_DESC) {\n  transactions(\n    ids: $ids\n    owners: $owners\n    recipients: $recipients\n    tags: $tags\n    bundledIn: $bundledIn\n    block: $block\n    first: $first\n    after: $after\n    sort: $sort\n  ) {\n    pageInfo {\n      hasNextPage\n    }\n    edges {\n      cursor\n      node {\n        id\n        block {\n          height\n          id\n          timestamp\n        }\n        recipient\n        owner {\n          address\n          key\n        }\n        fee {\n          winston\n          ar\n        }\n        quantity {\n          winston\n          ar\n        }\n        tags {\n          name\n          value\n        }\n        data {\n          size\n          type\n        }\n        bundledIn {\n          id\n        }\n      }\n    }\n  }\n}\n",
+      'query getTransactions($ids: [ID!], $owners: [String!], $recipients: [String!], $tags: [TagFilter!], $bundledIn: [ID!], $block: BlockFilter, $first: Int = 10, $after: String, $sort: SortOrder = HEIGHT_DESC) {\n  transactions(\n    ids: $ids\n    owners: $owners\n    recipients: $recipients\n    tags: $tags\n    bundledIn: $bundledIn\n    block: $block\n    first: $first\n    after: $after\n    sort: $sort\n  ) {\n    pageInfo {\n      hasNextPage\n    }\n    edges {\n      cursor\n      node {\n        id\n        block {\n          height\n          id\n          timestamp\n        }\n        recipient\n        owner {\n          address\n          key\n        }\n        fee {\n          winston\n          ar\n        }\n        quantity {\n          winston\n          ar\n        }\n        tags {\n          name\n          value\n        }\n        data {\n          size\n          type\n        }\n        bundledIn {\n          id\n        }\n      }\n    }\n  }\n}\n',
     variables: {
-      owners: ["LGphzQz7HJd9E8i2UpzzYK_V6azt1wAZDTJ8iNllka0"],
+      owners: [owner],
       tags: [
         {
-          name: "App-Name",
-          values: ["PlaneOfEuthymia"],
+          name: 'App-Name',
+          values: [appName],
         },
       ],
       first: 10,
     },
-    operationName: "getTransactions",
+    operationName: 'getTransactions',
   };
-  return (await axios.post("https://arweave.net/graphql", graphql)).data.data
+  return (await axios.post(`${gatewayUrl}/graphql`, graphql)).data.data
     .transactions.edges[0].node.id;
 };
 
 export const getLatestState = async (txId: string) => {
-  return (await axios.get(`https://arweave.net/${txId}/manifest.json`)).data;
+  return (await axios.get(`${gatewayUrl}/${txId}/manifest.json`)).data;
 };
 
 export const getWritingsList = async () => {
@@ -36,14 +37,14 @@ export const getWritingsList = async () => {
   const catalogue: any[] = [];
   const writingList: any[] = [];
   for (const key in paths) {
-    if (key.indexOf("writings/") != 0) {
+    if (key.indexOf('writings/') != 0) {
       continue;
     }
-    if (key.indexOf("writings/attachments") == 0) {
+    if (key.indexOf('writings/attachments') == 0) {
       continue;
     }
     await nextTick();
-    const keys = key.split("/");
+    const keys = key.split('/');
     keys.shift();
     keys.reduce((pre, cur, i) => {
       if (i === keys.length - 1) {
@@ -81,7 +82,7 @@ export const getFulltxId = async (prefix: string) => {
     await loadManifest();
   }
   const paths = manifest.value?.paths;
-  let txId = "";
+  let txId = '';
   for (const key in paths) {
     if (paths[key].id.indexOf(prefix) >= 0) {
       txId = paths[key].id;
