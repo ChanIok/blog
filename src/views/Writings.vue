@@ -5,6 +5,7 @@
         <SidebarVue
           :menuOptions="writingList"
           :isloadCompleted="isListloadCompleted"
+          :writingListKey="writingListKey"
           @onClick="onClickCallback"
         />
       </n-scrollbar>
@@ -14,6 +15,7 @@
         <LocalNavVue
           :menuOptions="writingList"
           :isloadCompleted="isListloadCompleted"
+          :writingListKey="writingListKey"
           @onClick="onClickCallback"
         />
       </n-scrollbar>
@@ -28,7 +30,7 @@
 </template>
 
 <script setup lang="ts">
-  import { onMounted, ref, nextTick, watchEffect } from 'vue';
+  import { onMounted, ref, nextTick, watch } from 'vue';
   import { NScrollbar } from 'naive-ui';
   import SidebarVue from '@/components/Sidebar.vue';
   import LocalNavVue from '@/components/LocalNav.vue';
@@ -36,7 +38,7 @@
   import { loadingBarAction, currentWritingText, manifest } from '@/store';
   import MarkdownVue from '@/components/Markdown.vue';
   import IntroductionVue from '@/components/Introduction.vue';
-  import { getFulltxId, getWritingsList } from '@/utils/artools';
+  import { getFullPath, getWritingsList } from '@/utils/artools';
   import { useRouter, useRoute } from 'vue-router';
   import { getWritingLocally } from '@/utils/dev';
   const router = useRouter();
@@ -45,44 +47,56 @@
   const isListloadCompleted = ref<boolean>(false);
   const showIntroduction = ref<boolean>(true);
   const writingList = ref<any>([]);
+  const writingListKey = ref<string>('about');
 
   const onClickCallback = async (path: any) => {
-    if (path == '关于') {
+    if (path == 'about') {
       showIntroduction.value = true;
+      router.push({ path: '/writings' });
       return;
     }
     router.push({ path: `/writings/${manifest.value?.paths[path].id}` });
   };
 
-  watchEffect(async () => {
+  const loadWriting = async () => {
     const txIdTemp = route.params.txId;
     if (route.params.txId == undefined || route.params.txId == '') {
       return;
     }
-    const txId = await getFulltxId(txIdTemp as string);
-    if (txId == '') {
+    const path = await getFullPath(txIdTemp as string);
+    if (path == '') {
       return;
     }
+    writingListKey.value = path;
     loadingBarAction.value = 'start';
 
     if (process.env.NODE_ENV === 'development') {
-      currentWritingText.value = await getWritingLocally(txId);
+      currentWritingText.value = await getWritingLocally(
+        manifest.value!.paths[path].id,
+      );
     } else {
       currentWritingText.value = (
-        await axios.get(`https://arweave.net/${txId}`)
+        await axios.get(`https://arweave.net/${manifest.value!.paths[path].id}`)
       ).data;
     }
 
     await nextTick();
     showIntroduction.value = false;
     loadingBarAction.value = 'finish';
-  });
+  };
+  watch(
+    () => route.params.txId,
+    () => {
+      loadWriting();
+    },
+  );
 
   onMounted(async () => {
     loadingBarAction.value = 'start';
     try {
       writingList.value = await getWritingsList();
       isListloadCompleted.value = true;
+      loadWriting();
     } catch (error) {
       console.log(error);
     }

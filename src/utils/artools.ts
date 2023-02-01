@@ -81,17 +81,17 @@ export const getWritingsList = async () => {
   return writingList;
 };
 
-export const getFulltxId = async (prefix: string) => {
+export const getFullPath = async (prefix: string) => {
   if (!manifest.value) {
     await loadManifest();
   }
   const paths = manifest.value?.paths;
-  let txId = '';
+  let path = '';
   for (const key in paths) {
     if (paths[key].id.indexOf(prefix) >= 0) {
-      txId = paths[key].id;
+      path =key;
       break;
     }
   }
-  return txId;
+  return path;
 };
