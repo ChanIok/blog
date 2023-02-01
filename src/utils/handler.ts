@@ -1,5 +1,5 @@
 import { state } from './common';
-import { windowWidth, isDark, isLoadCompleted, manifest } from '@/store';
+import { windowWidth, isDark, manifest } from '@/store';
 import { watch } from 'vue';
 
 const onLoadManifest = () => {

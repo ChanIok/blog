@@ -36,6 +36,10 @@ export const getWritingsList = async () => {
   const paths = manifest.value?.paths;
   const catalogue: any[] = [];
   const writingList: any[] = [];
+  writingList.push({
+    label: () => h(NEllipsis, null, { default: () => '关于' }),
+    key: 'about',
+  });
   for (const key in paths) {
     if (key.indexOf('writings/') != 0) {
       continue;

@@ -1,4 +1,4 @@
-import { isDark, isLoadCompleted, manifest } from '@/store';
+import { isDark, manifest } from '@/store';
 import { getLatestManifestId, getLatestState } from './artools';
 import { Liyue } from '@/assets';
 import { Venti } from '@/assets';

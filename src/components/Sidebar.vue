@@ -10,6 +10,7 @@
       :root-indent="20"
       :indent="12"
       :options="props.menuOptions"
+      default-value="about"
       @update:value="handleUpdateValue"
       accordion
     />

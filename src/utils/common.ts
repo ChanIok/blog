@@ -1,5 +1,4 @@
 import { isLoadCompleted } from '@/store';
-
 import ClipboardJS from 'clipboard';
 import { initHandler } from './handler';
 import { loadImgs, loadManifest, loadThemeConfig } from './loader';
