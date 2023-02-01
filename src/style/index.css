@@ -1,4 +1,6 @@
 @import url("@/style/varibles.less");
+@import url("@/style/md.less");
+
 html,
 body,
 #app {
