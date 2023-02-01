@@ -15,6 +15,40 @@
         <div class="content">
           <span> Hi，欢迎来到本站， </span>
           <span> 这里是我构筑于区块链的一心净土 </span>
+          <div class="link">
+            <div class="link-item">
+              <n-button
+                text
+                tag="a"
+                href="https://github.com/ChanIok/"
+                target="_blank"
+                color="#ffffffdf"
+              >
+                <template #icon>
+                  <n-icon>
+                    <LogoGithub />
+                  </n-icon>
+                </template>
+                Github
+              </n-button>
+            </div>
+            <div class="link-item">
+              <n-button
+                text
+                tag="a"
+                href="mailto:chaniok@qq.com"
+                target="_blank"
+                color="#ffffffdf"
+              >
+                <template #icon>
+                  <n-icon>
+                    <Mail />
+                  </n-icon>
+                </template>
+                Mail
+              </n-button>
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -22,55 +56,65 @@
 </template>
 
 <script setup lang="ts">
-import UniverseVue from "@/components/Universe.vue";
-import { isDark } from "@/store";
+  import UniverseVue from '@/components/Universe.vue';
+  import { isDark } from '@/store';
+  import { NIcon, NButton } from 'naive-ui';
+  import { LogoGithub, Mail } from '@vicons/ionicons5';
 </script>
 
 <style lang="less" scoped>
-#welcome-page {
-  width: 100%;
-  height: 100%;
-  .welcome-page-container {
-    display: flex;
+  #welcome-page {
     width: 100%;
     height: 100%;
-    justify-content: center;
-    align-items: center;
-    .light-theme {
-      text-shadow: 2px 3px 5px rgba(128, 128, 128, 0.3);
-    }
-    .card {
+    .welcome-page-container {
       display: flex;
-      flex-direction: column;
-      max-width: 500px;
-      .header {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        font-size: 36px;
-        color: rgb(255, 255, 255);
-        line-height: 48px;
-        .header-right {
-          margin-left: 10px;
-          margin-top: 20px;
-          font-size: 16px;
-          color: rgba(255, 255, 255, 0.5);
-        }
+      width: 100%;
+      height: 100%;
+      justify-content: center;
+      align-items: center;
+      .light-theme {
+        text-shadow: 3px 3px 5px rgba(78, 78, 78, 0.5);
       }
-      .content {
-        font-size: 18px;
-        color: rgb(255, 255, 255);
-        margin-bottom: 20px;
-        @media only screen and (max-width: 480px) {
-          margin-top: 20px;
-          line-height: 32px;
-          span {
-            text-align: center;
-            display: block;
+      .card {
+        display: flex;
+        flex-direction: column;
+        max-width: 500px;
+        .header {
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          font-size: 36px;
+          color: rgb(255, 255, 255);
+          line-height: 48px;
+          .header-right {
+            margin-left: 10px;
+            margin-top: 20px;
+            font-size: 16px;
+            color: rgba(255, 255, 255, 0.5);
+          }
+        }
+        .content {
+          font-size: 18px;
+          color: rgb(255, 255, 255);
+          margin-bottom: 20px;
+          @media only screen and (max-width: 480px) {
+            margin-top: 20px;
+            line-height: 32px;
+            span {
+              text-align: center;
+              display: block;
+            }
+          }
+          .link {
+            margin-top: 10px;
+            display: flex;
+            justify-content: space-around;
+            .link-item {
+              margin-right: 10px;
+            }
           }
         }
       }
     }
   }
-}
 </style>
