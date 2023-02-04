@@ -1,16 +1,19 @@
-import { isLoadCompleted } from '@/store';
-import ClipboardJS from 'clipboard';
-import { initHandler } from './handler';
-import { loadImgs, loadManifest, loadThemeConfig } from './loader';
+import { isLoadCompleted } from "@/store";
+import ClipboardJS from "clipboard";
+import { initHandler } from "./handler";
+import { loadImgs, loadManifest, loadThemeConfig } from "./loader";
 
 export const state = { isLoadManifestCompleted: false };
 
 export const initUtils = () => {
-  const clipboard = new ClipboardJS('.btn');
+  const clipboard = new ClipboardJS(".btn");
 };
 
 export const init = async () => {
-  window.parent.postMessage({ action: 'continueLoading' }, '*');
+  window.parent.postMessage(
+    { app: "PlaneOfEuthymia", event: "continueLoading" },
+    "*"
+  );
   initHandler();
   initUtils();
   loadThemeConfig();
@@ -18,6 +21,9 @@ export const init = async () => {
   if (!state.isLoadManifestCompleted) {
     await loadManifest();
   }
-  window.parent.postMessage({ action: 'loadCompleted' }, '*');
+  window.parent.postMessage(
+    { app: "PlaneOfEuthymia", event: "loadCompleted" },
+    "*"
+  );
   isLoadCompleted.value = true;
 };
