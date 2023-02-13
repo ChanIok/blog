@@ -6,6 +6,7 @@
         v-model:value="activeKey"
         mode="horizontal"
         :options="menuOptions"
+        :collapsed="windowWidth < 360"
       />
     </div>
     <div class="options-wrapper">
@@ -41,7 +42,6 @@ import {
   MoonSharp,
   ChatboxEllipsesOutline,
 } from "@vicons/ionicons5";
-
 import ShareButtonVue from "@/components/ShareButton.vue";
 import { RouterLink } from "vue-router";
 import { isDark, windowWidth } from "@/store";
@@ -146,6 +146,17 @@ const activeKey = ref<string | null>(null);
     margin-right: 20px;
     .share-wrapper {
       margin-right: 10px;
+    }
+  }
+}
+</style>
+<style lang="less">
+#nav-bar {
+  .menu-wrapper {
+    a {
+      @media only screen and (max-width: 360px) {
+        // visibility: hidden;
+      }
     }
   }
 }

@@ -141,6 +141,7 @@ watch(
       max-width: 720px;
       cursor: zoom-in;
     }
+    margin-bottom: 30px;
   }
 }
 </style>
